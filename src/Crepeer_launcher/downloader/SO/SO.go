@@ -1,7 +1,7 @@
 package so
 
 import (
-	"launcher/downloader/data"
+	"downloader/data"
 	"runtime"
 )
 

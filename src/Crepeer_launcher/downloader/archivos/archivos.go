@@ -1,10 +1,10 @@
 package archivos
 
 import (
+	so "downloader/SO"
+	"downloader/data"
 	"encoding/json"
 	"fmt"
-	so "launcher/downloader/SO"
-	"launcher/downloader/data"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -34,7 +34,7 @@ func Obtener_Json(versionURL string, vj *data.VersionJSON) {
 
 func Crear_comando(cp string, vj data.VersionJSON) string {
 
-	bat := fmt.Sprintf(`@echo off
+	bat := fmt.Sprintf(`
 java -cp "%s" %s ^
   --username TuNombre ^
   --version %s ^

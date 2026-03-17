@@ -1,9 +1,9 @@
 package goruntinas
 
 import (
+	"downloader/data"
+	"downloader/red"
 	"fmt"
-	"launcher/downloader/data"
-	"launcher/downloader/red"
 	"sync"
 	"sync/atomic"
 )
