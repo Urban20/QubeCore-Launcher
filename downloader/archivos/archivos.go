@@ -3,11 +3,14 @@ package archivos
 import (
 	"encoding/json"
 	"fmt"
+	so "launcher/downloader/SO"
 	"launcher/downloader/data"
 	"net/http"
 	"os"
 	"path/filepath"
 )
+
+// maneja la logica de obtencion de json y carpeta del juego
 
 const MCDIR = "./.minecraft" // ruta del .minecraft (la misma que el programa)
 
@@ -29,7 +32,44 @@ func Obtener_Json(versionURL string, vj *data.VersionJSON) {
 	fmt.Printf("Version: %s | Assets: %s\n\n", vj.ID, vj.AssetIndex.ID)
 }
 
-func Obtener_assets(tasks []data.Task, ai data.AssetIndex, GORUNTINAS int) {
+func Crear_comando(cp string, vj data.VersionJSON) string {
+
+	bat := fmt.Sprintf(`@echo off
+java -cp "%s" %s ^
+  --username TuNombre ^
+  --version %s ^
+  --gameDir %s ^
+  --assetsDir %s ^
+  --assetIndex %s ^
+  --uuid 00000000-0000-0000-0000-000000000000 ^
+  --accessToken 0 ^
+  --userType legacy
+`,
+		cp,
+		vj.MainClass,
+		vj.ID,
+		MCDIR,
+		filepath.Join(MCDIR, "assets"),
+		vj.AssetIndex.ID,
+	)
+
+	return bat
+}
+
+func Maneja_Assets(tasks []data.Task, vj data.VersionJSON, assetIndexPath string, GORUNTINAS int) []data.Task {
+
+	var ai data.AssetIndex // assetindex
+	if err := FetchJSON(vj.AssetIndex.URL, &ai); err != nil {
+		fmt.Println("Error fetching asset index:", err)
+		os.Exit(1)
+	}
+
+	tasks = append(tasks, data.Task{
+		URL:      vj.AssetIndex.URL,
+		DestPath: assetIndexPath,
+		SHA1:     vj.AssetIndex.SHA1,
+		Label:    "assets/indexes/" + vj.AssetIndex.ID + ".json",
+	})
 
 	for _, obj := range ai.Objects {
 		hash := obj.Hash
@@ -46,4 +86,67 @@ func Obtener_assets(tasks []data.Task, ai data.AssetIndex, GORUNTINAS int) {
 	}
 	fmt.Printf("Assets: %d archivos\n", len(ai.Objects))
 	fmt.Printf("\nTotal tareas: %d | Workers: %d\n\n", len(tasks), GORUNTINAS)
+
+	return tasks
+
+}
+
+func Maneja_Librerias(tasks []data.Task, vj data.VersionJSON) []data.Task {
+	skipped := 0
+	for _, lib := range vj.Libraries {
+		if !so.LibraryAllowed(lib) {
+			skipped++
+			continue
+		}
+		a := lib.Downloads.Artifact
+		if a.URL == "" {
+			continue
+		}
+		tasks = append(tasks, data.Task{
+			URL:      a.URL,
+			DestPath: filepath.Join(MCDIR, "libraries", filepath.FromSlash(a.Path)),
+			SHA1:     a.SHA1,
+			Label:    a.Path,
+		})
+	}
+	fmt.Printf("Libraries: %d a descargar, %d salteadas (otro OS)\n", len(tasks)-2, skipped)
+	return tasks
+}
+
+func Guarda_Json(tasks []data.Task, vj data.VersionJSON, versionURL string) []data.Task {
+
+	versionJSONPath := filepath.Join(MCDIR, "versions", vj.ID, vj.ID+".json")
+	tasks = append(tasks, data.Task{
+		URL:      versionURL,
+		DestPath: versionJSONPath,
+		Label:    vj.ID + ".json",
+	})
+	return tasks
+}
+
+func Cliente_JAR(tasks []data.Task, vj data.VersionJSON, clientPath string) []data.Task {
+
+	tasks = append(tasks, data.Task{
+		URL:      vj.Downloads.Client.URL,
+		DestPath: clientPath,
+		SHA1:     vj.Downloads.Client.SHA1,
+		Label:    "client.jar",
+	})
+	return tasks
+}
+
+func Crear_cp(clientPath string, vj data.VersionJSON) string {
+
+	cp := clientPath
+	for _, lib := range vj.Libraries {
+		if !so.LibraryAllowed(lib) {
+			continue
+		}
+		a := lib.Downloads.Artifact
+		if a.URL == "" {
+			continue
+		}
+		cp += ";" + filepath.Join(MCDIR, "libraries", filepath.FromSlash(a.Path))
+	}
+	return cp
 }
