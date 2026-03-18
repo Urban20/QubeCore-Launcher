@@ -38,9 +38,8 @@ func lanzar_goruntina(wg *sync.WaitGroup, done *atomic.Int64, errors []string, w
 	}
 
 	wg.Wait()
-	fmt.Println()
 
-	if len(errors) > 0 {
+	if len(errors) > 0 { //imprime los errores que recolecto
 		fmt.Printf("\n%d error(s):\n", len(errors))
 		for _, e := range errors {
 			fmt.Println(" ", e)

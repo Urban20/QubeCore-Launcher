@@ -5,7 +5,7 @@ import (
 	"runtime"
 )
 
-// identifica el sistema operativo
+// identifica el sistema operativo para descargar los archivos necesarios
 func CurrentOS() string {
 	switch runtime.GOOS {
 	case "windows":

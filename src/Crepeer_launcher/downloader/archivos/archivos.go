@@ -32,12 +32,12 @@ func Obtener_Json(versionURL string, vj *data.VersionJSON) {
 	fmt.Printf("Version: %s | Assets: %s\n\n", vj.ID, vj.AssetIndex.ID)
 }
 
-func Crear_comando(cp string, vj data.VersionJSON) []string {
+func Crear_comando(usuario, cp string, vj data.VersionJSON) []string {
 
 	var asset = filepath.Join(MCDIR, "assets")
 
 	bat := []string{"-cp", cp, vj.MainClass,
-		"--username", "Steve",
+		"--username", usuario,
 		"--version", vj.ID,
 		"--gameDir", MCDIR,
 		"--assetsDir", asset,
