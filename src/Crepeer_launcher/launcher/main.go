@@ -3,6 +3,7 @@ package main
 import (
 	"downloader"
 	"fmt"
+	"launcher/configuracion"
 	"launcher/versiones"
 	"os"
 	"os/exec"
@@ -17,12 +18,12 @@ var (
 
 const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
 
-func buscar_instancia(eleccion string, v versiones.Versiones) {
+func buscar_instancia(eleccion, usuario, ruta_java string, v versiones.Versiones) {
 
 	if v.Nombre == eleccion {
 
-		comando := downloader.Descargar_version(v.Url)
-		cmd := exec.Command("java", comando...) // asumo que el usuario tiene java
+		comando := downloader.Descargar_version(v.Url, usuario)
+		cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
 		nul, _ := os.Open(os.DevNull)
 		cmd.Stdout = nul
 		cmderr := cmd.Run()
@@ -34,18 +35,29 @@ func buscar_instancia(eleccion string, v versiones.Versiones) {
 	}
 }
 
-func main() {
-
+func cargar_version() []byte {
 	var bytes []byte
 	if !versiones.Existe_archivo(versiones.ARCHIVO_INSTANCIAS) {
+		// si el json de versiones no existe obtiene el json de internet
 		fmt.Println("json no encontrado, descargando")
+
 		bytes = versiones.Obtener_data(versiones.VERSIONES_JSON)
+
 		versiones.Guardar_versiones(bytes)
+
 	} else {
 		fmt.Print("\nse encontro el json")
 		bytes = versiones.Leer_json(versiones.ARCHIVO_INSTANCIAS)
 
 	}
+	return bytes
+}
+
+func main() {
+
+	config := configuracion.Leer_config()
+
+	bytes := cargar_version()
 
 	// impresion de versiones
 	versiones_ := versiones.Listar_Versiones(bytes)
@@ -82,7 +94,7 @@ func main() {
 
 		for _, v := range versiones_ {
 
-			buscar_instancia(eleccion, v)
+			buscar_instancia(eleccion, config.Usuario, config.Ruta_Java, v)
 		}
 	}
 }
