@@ -9,6 +9,16 @@ import (
 	"path/filepath"
 )
 
+/*
+downloader es una herramienta automatizada generada parcialmente con IA
+
+permite hacer el trabajo sucio de parsear los JSON y descargar recursivamente cada archivo jar para
+la version solicitada
+
+SOLO FUE PROBADO EN WINDOWS
+
+*/
+
 const (
 	GORUNTINAS = 1000
 )

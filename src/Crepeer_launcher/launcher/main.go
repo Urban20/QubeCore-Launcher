@@ -12,7 +12,7 @@ import (
 var (
 	exe, _         = os.Getwd()
 	ruta_minecraft = filepath.Clean(filepath.Join(exe, ".minecraft"))
-	ruta_versiones = filepath.Clean(filepath.Join(ruta_minecraft, "versions"))
+	ruta_versiones = filepath.Join(ruta_minecraft, "versions")
 )
 
 const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
@@ -25,7 +25,11 @@ func buscar_instancia(eleccion string, v versiones.Versiones) {
 		cmd := exec.Command("java", comando...) // asumo que el usuario tiene java
 		nul, _ := os.Open(os.DevNull)
 		cmd.Stdout = nul
-		cmd.Run()
+		cmderr := cmd.Run()
+
+		if cmderr != nil {
+			fmt.Println(cmderr)
+		}
 
 	}
 }
@@ -47,16 +51,17 @@ func main() {
 	versiones_ := versiones.Listar_Versiones(bytes)
 	fmt.Print("\nversiones disponibles:\n\n")
 
-	var formato = "%d) %s\n"
-
 	var contador int // para que no muestre todas porque son un monton
 
 	// muestra las versiones una a una
 	for _, version := range versiones_ {
-		//ruta := filepath.Clean(filepath.Join(ruta_minecraft, version.Nombre))
-		//fmt.Println(ruta) ver por que no se reconocen las rutas TODO
+		ruta := filepath.Join(ruta_versiones, version.Nombre)
 
-		fmt.Printf(formato, version.Indice, version.Nombre)
+		if versiones.Existe_archivo(ruta) {
+			fmt.Printf("%d) %s   [instalada]\n", version.Indice, version.Nombre)
+		} else {
+			fmt.Printf("%d) %s\n", version.Indice, version.Nombre)
+		}
 		contador++
 		if contador > LIMITE {
 			fmt.Println("\nse pueden elegir otras versiones ...")

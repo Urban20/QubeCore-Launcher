@@ -37,7 +37,7 @@ func Crear_comando(cp string, vj data.VersionJSON) []string {
 	var asset = filepath.Join(MCDIR, "assets")
 
 	bat := []string{"-cp", cp, vj.MainClass,
-		"--username", "TuNombre",
+		"--username", "Steve",
 		"--version", vj.ID,
 		"--gameDir", MCDIR,
 		"--assetsDir", asset,
