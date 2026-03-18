@@ -75,16 +75,16 @@ func main() {
 	var ejecucion bool = true
 
 	config := configuracion.Leer_config()
-	consola.Imprimir_logo()
 
 	bytes := cargar_version()
 
 	// impresion de versiones
 
 	// muestra las versiones una a una
+	consola.Imprimir_logo()
 
 	for ejecucion {
-
+		consola.Limpiar_consola()
 		eleccion := consola.Menu(consola.Opcion1, consola.Opcion2, consola.Opcion3)
 
 		switch eleccion {
@@ -93,13 +93,14 @@ func main() {
 			lanzar_versiones(bytes, config)
 		case consola.Opcion2:
 			fmt.Print("\n\nno implementado todavia\n")
-
+			fmt.Scanln()
 		case consola.Opcion3:
 			fmt.Print("\n\nsaliendo del launcher ...\n")
 			ejecucion = false
+
 		}
 
 		// esto es para el lanzamiento de versiones
-
+		consola.Limpiar_consola()
 	}
 }

@@ -2,8 +2,6 @@ package consola
 
 import (
 	"fmt"
-	"os/exec"
-	"runtime"
 
 	"github.com/pterm/pterm"
 	"github.com/pterm/pterm/putils"
@@ -20,8 +18,12 @@ var Opcion3 = "3) Salir"
 
 func Menu(opciones ...string) string {
 
-	seleccion, _ := pterm.DefaultInteractiveSelect.WithOptions(opciones).Show()
-	return seleccion
+	seleccion := pterm.DefaultInteractiveSelect
+	seleccion.DefaultText = "SELECCIONAR opcion"
+	seleccion.Selector = ">> "
+	seleccion.FilterInputPlaceholder = "TIPEAR opcion"
+	op, _ := seleccion.WithOptions(opciones).Show()
+	return op
 
 }
 
@@ -29,24 +31,16 @@ func Imprimir_cartel(texto string) {
 	pterm.Info.Println(texto)
 }
 
-func Limpiar_consola() {
+func Limpiar_consola() { // esto no funciona bien TODO
 
-	var comando string
-
-	switch runtime.GOOS {
-	case "windows":
-		comando = "cls"
-	default:
-		comando = "clear"
-	}
-
-	exec.Command(comando).Run()
+	area, _ := pterm.DefaultArea.Start()
+	area.Clear()
 
 }
 
 func Imprimir_logo() {
-	banner := fmt.Sprintf("Launcher CLI\nVersion: %s\nAutor: %s", VERSION, AUTOR)
-	Limpiar_consola()
+	banner := fmt.Sprintf("Launcher CLI para Minecraft Java\nVersion: %s\nAutor: %s", VERSION, AUTOR)
+	//Limpiar_consola()
 	logo, _ := pterm.DefaultBigText.WithLetters(putils.LettersFromString("Crepeer")).Srender()
 	pterm.DefaultCenter.Println(logo)
 	pterm.DefaultCenter.WithCenterEachLineSeparately().Println(banner)
