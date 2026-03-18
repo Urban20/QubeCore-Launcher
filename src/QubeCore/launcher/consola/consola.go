@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	VERSION = "V1.0"
-	AUTOR   = "Urb@n"
+	VERSION  = "V1.0"
+	AUTOR    = "Urb@n"
+	LAUNCHER = "QubeCore"
 )
 
 var Opcion1 = "1) Lanzar version"
@@ -41,7 +42,7 @@ func Limpiar_consola() { // esto no funciona bien TODO
 func Imprimir_logo() {
 	banner := fmt.Sprintf("Launcher CLI para Minecraft Java\nVersion: %s\nAutor: %s", VERSION, AUTOR)
 	//Limpiar_consola()
-	logo, _ := pterm.DefaultBigText.WithLetters(putils.LettersFromString("Crepeer")).Srender()
+	logo, _ := pterm.DefaultBigText.WithLetters(putils.LettersFromString(LAUNCHER)).Srender()
 	pterm.DefaultCenter.Println(logo)
 	pterm.DefaultCenter.WithCenterEachLineSeparately().Println(banner)
 }
