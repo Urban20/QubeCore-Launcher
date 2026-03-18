@@ -1,3 +1,5 @@
 .minecraft/
 logs/
 *.bat
+versiones.json
+*.exe

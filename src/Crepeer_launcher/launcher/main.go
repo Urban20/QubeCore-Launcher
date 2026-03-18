@@ -15,6 +15,21 @@ var (
 	ruta_versiones = filepath.Clean(filepath.Join(ruta_minecraft, "versions"))
 )
 
+const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
+
+func buscar_instancia(eleccion string, v versiones.Versiones) {
+
+	if v.Nombre == eleccion {
+
+		comando := downloader.Descargar_version(v.Url)
+		cmd := exec.Command("java", comando...) // asumo que el usuario tiene java
+		nul, _ := os.Open(os.DevNull)
+		cmd.Stdout = nul
+		cmd.Run()
+
+	}
+}
+
 func main() {
 
 	var bytes []byte
@@ -33,30 +48,36 @@ func main() {
 	fmt.Print("\nversiones disponibles:\n\n")
 
 	var formato = "%d) %s\n"
-	for _, version := range versiones_ {
-		ruta := filepath.Clean(filepath.Join(ruta_minecraft, version.Nombre))
-		//fmt.Println(ruta) ver por que no se reconocen las rutas TODO
-		if versiones.Existe_archivo(ruta) {
-			fmt.Printf(formato+" []", version.Indice, version.Nombre)
 
-		} else {
-			fmt.Printf(formato, version.Indice, version.Nombre)
+	var contador int // para que no muestre todas porque son un monton
+
+	// muestra las versiones una a una
+	for _, version := range versiones_ {
+		//ruta := filepath.Clean(filepath.Join(ruta_minecraft, version.Nombre))
+		//fmt.Println(ruta) ver por que no se reconocen las rutas TODO
+
+		fmt.Printf(formato, version.Indice, version.Nombre)
+		contador++
+		if contador > LIMITE {
+			fmt.Println("\nse pueden elegir otras versiones ...")
+			break
 		}
 
 	}
 	//------------------------------------------
 
-	var eleccion int
-	fmt.Print("seleccionar numero de version > ")
-	fmt.Scanln(&eleccion)
+	for {
+		var eleccion string
+		fmt.Print("seleccionar version > ")
+		_, scanerr := fmt.Scanln(&eleccion)
+		if scanerr != nil {
 
-	for _, v := range versiones_ {
-		if v.Indice == eleccion {
+			continue
+		}
 
-			comando := downloader.Descargar_version(v.Url)
-			exec.Command("java", comando...).Run()
-			break
+		for _, v := range versiones_ {
+
+			buscar_instancia(eleccion, v)
 		}
 	}
-
 }
