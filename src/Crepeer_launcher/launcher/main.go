@@ -4,6 +4,7 @@ import (
 	"downloader"
 	"fmt"
 	"launcher/configuracion"
+	"launcher/consola"
 	"launcher/versiones"
 	"os"
 	"os/exec"
@@ -39,14 +40,14 @@ func cargar_version() []byte {
 	var bytes []byte
 	if !versiones.Existe_archivo(versiones.ARCHIVO_INSTANCIAS) {
 		// si el json de versiones no existe obtiene el json de internet
-		fmt.Println("json no encontrado, descargando")
+		consola.Imprimir_cartel("json no encontrado, descargando\n")
 
 		bytes = versiones.Obtener_data(versiones.VERSIONES_JSON)
 
 		versiones.Guardar_versiones(bytes)
 
 	} else {
-		fmt.Print("\nse encontro el json")
+		consola.Imprimir_cartel("se encontro el JSON\n")
 		bytes = versiones.Leer_json(versiones.ARCHIVO_INSTANCIAS)
 
 	}
@@ -56,31 +57,15 @@ func cargar_version() []byte {
 func main() {
 
 	config := configuracion.Leer_config()
+	consola.Imprimir_logo()
 
 	bytes := cargar_version()
 
 	// impresion de versiones
 	versiones_ := versiones.Listar_Versiones(bytes)
-	fmt.Print("\nversiones disponibles:\n\n")
-
-	var contador int // para que no muestre todas porque son un monton
-
+	consola.Mostrar_lista_Versiones(versiones_, ruta_versiones, 10)
 	// muestra las versiones una a una
-	for _, version := range versiones_ {
-		ruta := filepath.Join(ruta_versiones, version.Nombre)
 
-		if versiones.Existe_archivo(ruta) {
-			fmt.Printf("%d) %s   [instalada]\n", version.Indice, version.Nombre)
-		} else {
-			fmt.Printf("%d) %s\n", version.Indice, version.Nombre)
-		}
-		contador++
-		if contador > LIMITE {
-			fmt.Println("\nse pueden elegir otras versiones ...")
-			break
-		}
-
-	}
 	//------------------------------------------
 
 	for {
