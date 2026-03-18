@@ -9,6 +9,7 @@ import (
 )
 
 const VERSIONES_JSON = "https://launchermeta.mojang.com/mc/game/version_manifest.json"
+const ARCHIVO_INSTANCIAS = "./versiones.json"
 
 type MapaVersiones struct {
 	Versions []map[string]string
@@ -20,7 +21,7 @@ type Versiones struct { // esto contiene info de nombre (1.21.10 ejemplo , url u
 	Indice int
 }
 
-var versiones_disponibles []Versiones
+var Versiones_disponibles []Versiones
 
 // obtiene la url y devulve nil o bytes
 func Obtener_data(url string) []byte {
@@ -37,6 +38,28 @@ func Obtener_data(url string) []byte {
 	}
 
 	return bytes
+
+}
+
+func Leer_json(json_ string) []byte {
+
+	data_json, _ := os.ReadFile(json_)
+	return data_json
+
+}
+
+func Existe_archivo(archivo string) bool {
+	_, error := os.Stat(archivo)
+
+	return error == nil
+
+}
+
+func Guardar_versiones(data []byte) {
+
+	arch, _ := os.Create(ARCHIVO_INSTANCIAS)
+
+	arch.Write(data)
 
 }
 
@@ -60,7 +83,7 @@ func Listar_Versiones(bytes []byte) []Versiones {
 
 		if tipo == "release" {
 
-			versiones_disponibles = append(versiones_disponibles, Versiones{
+			Versiones_disponibles = append(Versiones_disponibles, Versiones{
 				Nombre: version_, Url: url_, Indice: indice,
 			})
 			indice++
@@ -68,5 +91,5 @@ func Listar_Versiones(bytes []byte) []Versiones {
 		}
 
 	}
-	return versiones_disponibles
+	return Versiones_disponibles
 }

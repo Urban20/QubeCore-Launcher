@@ -16,7 +16,7 @@ const (
 var tasks []data.Task
 
 // descarga la carpeta justo con la version y retorna el comando de lanzamiento del juego
-func Descargar_version(versionURL string) string {
+func Descargar_version(versionURL string) []string {
 
 	// TODO: eliminar
 	/*
