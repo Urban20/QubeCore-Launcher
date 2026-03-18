@@ -56,7 +56,7 @@ func lanzar_goruntina(wg *sync.WaitGroup, done *atomic.Int64, errores chan strin
 func RunWorkers(tasks []data.Task, workers int) {
 	ch := make(chan data.Task, len(tasks))
 	errores := make(chan string, len(tasks))
-	for _, t := range tasks {
+	for _, t := range tasks { // pasa las tareas
 		ch <- t
 	}
 	close(ch)
