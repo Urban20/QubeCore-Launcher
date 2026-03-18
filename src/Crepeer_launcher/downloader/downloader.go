@@ -9,13 +9,15 @@ import (
 )
 
 /*
-downloader es una herramienta automatizada generada parcialmente con IA
+Downloader es una herramienta automatizada generada parcialmente con IA
 
-permite hacer el trabajo sucio de parsear los JSON y descargar recursivamente cada archivo jar para
-la version solicitada
+Permite hacer el trabajo sucio de parsear los JSON y descargar recursivamente cada archivo jar para
+la version solicitada.
+Contiene español e ingles mezclado producto del enfoque hibrido generacion/escritura manual
 
 SOLO FUE PROBADO EN WINDOWS
 
+intento documentar lo necesario
 */
 
 const (

@@ -128,7 +128,7 @@ func Cliente_JAR(tasks []data.Task, vj data.VersionJSON, clientPath string) []da
 	return tasks
 }
 
-func Crear_cp(clientPath string, vj data.VersionJSON) string {
+func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = classpath
 
 	cp := clientPath
 	for _, lib := range vj.Libraries {

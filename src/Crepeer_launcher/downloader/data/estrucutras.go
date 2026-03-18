@@ -1,6 +1,7 @@
 package data
 
 // este modulo tiene las estructuras que se necesitan para parsear el json de manifiest.json
+// para cada version
 
 type Artifact struct {
 	Path string `json:"path"`
