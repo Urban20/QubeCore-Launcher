@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 const VERSIONES_JSON = "https://launchermeta.mojang.com/mc/game/version_manifest.json"
@@ -92,4 +93,24 @@ func Listar_Versiones(bytes []byte) []Versiones {
 
 	}
 	return Versiones_disponibles
+}
+
+func Mostrar_lista_Versiones(versiones_ []Versiones, ruta_versiones string, LIMITE int) {
+	var contador int
+	for _, version := range versiones_ {
+		ruta := filepath.Join(ruta_versiones, version.Nombre)
+
+		if Existe_archivo(ruta) {
+			fmt.Printf("%d) %s   [instalada]\n", version.Indice, version.Nombre)
+		} else {
+			fmt.Printf("%d) %s\n", version.Indice, version.Nombre)
+		}
+		contador++
+		if contador > LIMITE {
+			fmt.Println("\nse pueden elegir otras versiones ...")
+			break
+		}
+
+	}
+
 }

@@ -54,7 +54,25 @@ func cargar_version() []byte {
 	return bytes
 }
 
+func lanzar_versiones(bytes []byte, config configuracion.Configuracion_) {
+
+	var version_elegida string
+	versiones_ := versiones.Listar_Versiones(bytes)
+	versiones.Mostrar_lista_Versiones(versiones_, ruta_versiones, 10)
+
+	fmt.Print("seleccionar version > ")
+	fmt.Scanln(&version_elegida)
+
+	for _, v := range versiones_ {
+
+		buscar_instancia(version_elegida, config.Usuario, config.Ruta_Java, v)
+	}
+
+}
+
 func main() {
+
+	var ejecucion bool = true
 
 	config := configuracion.Leer_config()
 	consola.Imprimir_logo()
@@ -62,24 +80,26 @@ func main() {
 	bytes := cargar_version()
 
 	// impresion de versiones
-	versiones_ := versiones.Listar_Versiones(bytes)
-	consola.Mostrar_lista_Versiones(versiones_, ruta_versiones, 10)
+
 	// muestra las versiones una a una
 
-	//------------------------------------------
+	for ejecucion {
 
-	for {
-		var eleccion string
-		fmt.Print("seleccionar version > ")
-		_, scanerr := fmt.Scanln(&eleccion)
-		if scanerr != nil {
+		eleccion := consola.Menu(consola.Opcion1, consola.Opcion2, consola.Opcion3)
 
-			continue
+		switch eleccion {
+
+		case consola.Opcion1:
+			lanzar_versiones(bytes, config)
+		case consola.Opcion2:
+			fmt.Print("\n\nno implementado todavia\n")
+
+		case consola.Opcion3:
+			fmt.Print("\n\nsaliendo del launcher ...\n")
+			ejecucion = false
 		}
 
-		for _, v := range versiones_ {
+		// esto es para el lanzamiento de versiones
 
-			buscar_instancia(eleccion, config.Usuario, config.Ruta_Java, v)
-		}
 	}
 }
