@@ -2,20 +2,14 @@ package main
 
 import (
 	"downloader"
+	"downloader/archivos"
 	"fmt"
 	"launcher/configuracion"
 	"launcher/consola"
 	"launcher/versiones"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"time"
-)
-
-var (
-	exe, _         = os.Getwd()
-	ruta_minecraft = filepath.Clean(filepath.Join(exe, ".minecraft"))
-	ruta_versiones = filepath.Join(ruta_minecraft, "versions")
 )
 
 const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
@@ -43,9 +37,7 @@ func cargar_version() []byte {
 		// si el json de versiones no existe obtiene el json de internet
 		consola.Imprimir_cartel("json no encontrado, descargando\n")
 
-		bytes = versiones.Obtener_data(versiones.VERSIONES_JSON)
-
-		versiones.Guardar_versiones(bytes)
+		bytes = archivos.Descargar_Manifiest()
 
 	} else {
 		consola.Imprimir_cartel("se encontro el JSON\n")
@@ -59,7 +51,7 @@ func lanzar_versiones(bytes []byte, config configuracion.Configuracion_) {
 
 	var version_elegida string
 	versiones_ := versiones.Listar_Versiones(bytes)
-	versiones.Mostrar_lista_Versiones(versiones_, ruta_versiones, 10)
+	versiones.Mostrar_lista_Versiones(versiones_, versiones.Ruta_versiones, 10)
 
 	fmt.Print("seleccionar version ➡ ")
 	fmt.Scanln(&version_elegida)
@@ -80,9 +72,6 @@ func main() {
 	bytes := cargar_version()
 	fmt.Println("Usuario iniciado como: ", config.Usuario) // TODO: decorar
 
-	// impresion de versiones
-
-	// muestra las versiones una a una
 	consola.Imprimir_logo()
 
 	for ejecucion {
@@ -94,7 +83,7 @@ func main() {
 		case consola.Opcion1:
 			lanzar_versiones(bytes, config)
 		case consola.Opcion2:
-			fmt.Print("\n\nno implementado todavia\n")
+			fmt.Print("\n\nno implementado todavia\n") // TODO: hacer el display de config
 			fmt.Scanln()
 		case consola.Opcion3:
 			fmt.Print("\n\nsaliendo del launcher ...\n")

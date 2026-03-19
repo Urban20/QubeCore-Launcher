@@ -10,6 +10,12 @@ import (
 	"path/filepath"
 )
 
+var (
+	Exe, _         = os.Getwd()
+	Ruta_minecraft = filepath.Clean(filepath.Join(Exe, ".minecraft"))
+	Ruta_versiones = filepath.Join(Ruta_minecraft, "versions")
+)
+
 const VERSIONES_JSON = "https://launchermeta.mojang.com/mc/game/version_manifest.json"
 const ARCHIVO_INSTANCIAS = "./versiones.json"
 
@@ -34,6 +40,12 @@ func Obtener_data(url string) []byte {
 		return nil
 	}
 
+	if resp.StatusCode != http.StatusOK {
+
+		fmt.Printf("no se pudo extraer la informacion de versiones, codigo de estado: %d", resp.StatusCode) // cambiar con un mensaje de error mal lindo
+		return nil
+	}
+
 	bytes, readerr := io.ReadAll(resp.Body)
 	if readerr != nil {
 		return nil
@@ -50,13 +62,7 @@ func Leer_json(json_ string) []byte {
 
 }
 
-func Existe_archivo(archivo string) bool {
-	_, error := os.Stat(archivo)
-
-	return error == nil
-
-}
-
+// descarga el json
 func Guardar_versiones(data []byte) {
 
 	arch, _ := os.Create(ARCHIVO_INSTANCIAS)
@@ -96,12 +102,26 @@ func Listar_Versiones(bytes []byte) []Versiones {
 	return Versiones_disponibles
 }
 
+func Existe_archivo(archivo string) bool {
+	_, error := os.Stat(archivo)
+
+	return error == nil
+
+}
+
+func Existe_version(version string) bool {
+
+	v := filepath.Join(Ruta_versiones, version)
+
+	return Existe_archivo(v)
+
+}
+
 func Mostrar_lista_Versiones(versiones_ []Versiones, ruta_versiones string, LIMITE int) {
 	var contador int
 	for _, version := range versiones_ {
-		ruta := filepath.Join(ruta_versiones, version.Nombre)
 
-		if Existe_archivo(ruta) {
+		if Existe_version(version.Nombre) {
 			fmt.Printf("%d) %s   [instalada]\n", version.Indice, version.Nombre)
 		} else {
 			fmt.Printf("%d) %s\n", version.Indice, version.Nombre)

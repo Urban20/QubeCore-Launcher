@@ -5,6 +5,8 @@ import (
 	"downloader/data"
 	"encoding/json"
 	"fmt"
+	"launcher/consola"
+	"launcher/versiones"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -139,7 +141,24 @@ func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = cla
 		if a.URL == "" {
 			continue
 		}
-		cp += ";" + filepath.Join(MCDIR, "libraries", filepath.FromSlash(a.Path))
+		cp += string(filepath.ListSeparator) + filepath.Join(MCDIR, "libraries", filepath.FromSlash(a.Path))
 	}
 	return cp
+}
+
+func Descargar_Manifiest() []byte {
+
+	// descarga, guarda y retorna bytes
+	consola.Imprimir_cartel("json no encontrado, descargando\n")
+
+	bytes := versiones.Obtener_data(versiones.VERSIONES_JSON)
+
+	if bytes == nil || len(bytes) == 0 {
+		os.Exit(1)
+	}
+
+	versiones.Guardar_versiones(bytes)
+
+	return bytes
+
 }

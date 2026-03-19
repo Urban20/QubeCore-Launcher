@@ -8,17 +8,7 @@ import (
 	"path/filepath"
 )
 
-/*
-Downloader es una herramienta automatizada generada parcialmente con IA
-
-Permite hacer el trabajo sucio de parsear los JSON y descargar recursivamente cada archivo jar para
-la version solicitada.
-Contiene español e ingles mezclado producto del enfoque hibrido generacion/escritura manual
-
-SOLO FUE PROBADO EN WINDOWS
-
-intento documentar lo necesario
-*/
+// Downloader maneja la descarga de archivos y el lanzamiento del juego
 
 const (
 	GORUNTINAS = 1000
