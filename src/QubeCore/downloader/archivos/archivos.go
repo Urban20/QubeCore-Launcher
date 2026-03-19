@@ -11,42 +11,43 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
 )
 
 // maneja la logica de obtencion de json y carpeta del juego
 
 const MCDIR = "./.minecraft" // ruta del .minecraft (la misma que el programa)
 
-func FetchJSON(url string, target interface{}) error {
+func FetchJSON(url, ruta_target string, target interface{}) error {
 
 	// hace un get a la url y vuelca el resultado en target
 	// TODO: hay que cachear la info en caso de que ya este
-	version_json := path.Base(url)
 
-	ruta_target := filepath.Clean(filepath.Join(versiones.Ruta_versiones, "1.21.10", version_json))
+	json_arch := path.Base(url)
+	archivo := filepath.Join(ruta_target, json_arch)
+
 	fmt.Println("version ruta: ", ruta_target)
 	if versiones.Existe_archivo(ruta_target) {
 		// si ya existe leer de ahi
 		fmt.Println("se encontro la ruta al json")
-		arch, _ := os.Open(ruta_target)
+		arch, _ := os.Open(archivo)
 
 		return json.NewDecoder(arch).Decode(target)
 	}
+
 	fmt.Println("no se encontro la ruta al json de version")
-	resp, err := http.Get(url) // sino descarga de ahi y la prox vez mc lo cachea automaticamnete
+	resp, err := http.Get(url) // sino descarga de ahi y la prox vez mc lo cachea automaticamnete (se supone)
+	// TODO: verificar bien en algun momento
 	if err != nil {
 		return err
 	}
-	// agregar para crear el archivo
-	// TODO TODO!!
-
 	return json.NewDecoder(resp.Body).Decode(target)
 
 }
 
-func Obtener_Json(versionURL string, vj *data.VersionJSON) {
+func Obtener_Json(versionURL, ruta_target string, vj *data.VersionJSON) {
 
-	if err := FetchJSON(versionURL, vj); err != nil {
+	if err := FetchJSON(versionURL, ruta_target, vj); err != nil {
 		fmt.Println("Error obteniendo la version JSON:", err)
 		os.Exit(1)
 	}
@@ -70,10 +71,10 @@ func Crear_comando(usuario, cp string, vj data.VersionJSON) []string {
 	return bat
 }
 
-func Maneja_Assets(tasks []data.Task, vj data.VersionJSON, assetIndexPath string, GORUNTINAS int) []data.Task {
+func Maneja_Assets(tasks []data.Task, vj data.VersionJSON, assetIndexPath, ruta_target string, GORUNTINAS int) []data.Task {
 
 	var ai data.AssetIndex // assetindex
-	if err := FetchJSON(vj.AssetIndex.URL, &ai); err != nil {
+	if err := FetchJSON(vj.AssetIndex.URL, ruta_target, &ai); err != nil {
 		fmt.Println("Error fetching asset index:", err)
 		os.Exit(1)
 	}
@@ -179,5 +180,12 @@ func Descargar_Manifiest() []byte {
 	versiones.Guardar_versiones(bytes)
 
 	return bytes
+
+}
+
+func Extraer_version(archivo string) string {
+
+	r, _ := regexp.Compile(`(\d+\.\d+(?:\.\d+)?)\.json`)
+	return string(r.FindSubmatch([]byte(archivo))[1])
 
 }

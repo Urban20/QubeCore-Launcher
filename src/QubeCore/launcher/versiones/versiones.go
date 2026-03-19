@@ -33,7 +33,7 @@ var Versiones_disponibles []Versiones
 
 // obtiene la url y devulve nil o bytes
 func Obtener_data(url string) []byte {
-
+	// json de versiones manifiest.json
 	resp, resperr := http.Get(url)
 	if resperr != nil {
 

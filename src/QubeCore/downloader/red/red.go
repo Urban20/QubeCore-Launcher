@@ -26,7 +26,7 @@ func DownloadFile(url, destPath, expectedSHA1 string) error {
 	// omite si ya existe
 	if expectedSHA1 != "" {
 		if got, err := Sha1File(destPath); err == nil && got == expectedSHA1 {
-			return nil // already good
+			return nil
 		}
 	}
 
