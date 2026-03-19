@@ -72,12 +72,13 @@ func lanzar_versiones(bytes []byte, config configuracion.Configuracion_) {
 }
 
 func main() {
-
+	configuracion.Crear_ini()
 	var ejecucion bool = true
 
 	config := configuracion.Leer_config()
 
 	bytes := cargar_version()
+	fmt.Println("Usuario iniciado como: ", config.Usuario) // TODO: decorar
 
 	// impresion de versiones
 
