@@ -15,13 +15,15 @@ import (
 const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
 
 func buscar_instancia(eleccion, usuario, ruta_java string, v versiones.Versiones) {
+	var comando []string
 
 	if v.Nombre == eleccion {
 
-		comando := downloader.Descargar_version(v.Url, usuario)
+		comando = downloader.Descargar_version(v.Url, usuario)
 		cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
 		nul, _ := os.Open(os.DevNull)
 		cmd.Stdout = nul
+		defer nul.Close()
 		cmderr := cmd.Run()
 
 		if cmderr != nil {

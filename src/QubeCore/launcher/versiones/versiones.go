@@ -29,8 +29,6 @@ type Versiones struct { // esto contiene info de nombre (1.21.10 ejemplo , url u
 	Indice int
 }
 
-var Versiones_disponibles []Versiones
-
 // obtiene la url y devulve nil o bytes
 func Obtener_data(url string) []byte {
 	// json de versiones manifiest.json
@@ -73,6 +71,7 @@ func Guardar_versiones(data []byte) {
 
 // busca las versiones release y retorna una lista de estructuras
 func Listar_Versiones(bytes []byte) []Versiones {
+	var Versiones_disponibles []Versiones
 
 	v := MapaVersiones{}
 

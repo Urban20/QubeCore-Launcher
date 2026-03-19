@@ -16,11 +16,10 @@ const (
 	GORUNTINAS = 1000
 )
 
-var tasks []data.Task
-
 // descarga la carpeta justo con la version y retorna el comando de lanzamiento del juego
 func Descargar_version(versionURL, usuario string) []string {
 
+	var tasks []data.Task
 	var version_json = path.Base(versionURL)
 	var carpeta_version = archivos.Extraer_version(version_json)
 	var ruta_target_versiones = filepath.Join(versiones.Ruta_versiones, carpeta_version)

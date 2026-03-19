@@ -27,10 +27,17 @@ func FetchJSON(url, ruta_target string, target interface{}) error {
 	archivo := filepath.Join(ruta_target, json_arch)
 
 	fmt.Println("version ruta: ", ruta_target)
-	if versiones.Existe_archivo(ruta_target) {
+
+	fmt.Printf("archivo: %s", archivo)
+
+	if versiones.Existe_archivo(archivo) {
 		// si ya existe leer de ahi
 		fmt.Println("se encontro la ruta al json")
-		arch, _ := os.Open(archivo)
+		arch, err := os.Open(archivo)
+
+		if err != nil {
+			return err
+		}
 
 		return json.NewDecoder(arch).Decode(target)
 	}
@@ -75,8 +82,9 @@ func Maneja_Assets(tasks []data.Task, vj data.VersionJSON, assetIndexPath, ruta_
 
 	var ai data.AssetIndex // assetindex
 	if err := FetchJSON(vj.AssetIndex.URL, ruta_target, &ai); err != nil {
-		fmt.Println("Error fetching asset index:", err)
-		os.Exit(1)
+		fmt.Println("Error lanzando el indice de assets:", err)
+		fmt.Println("CUIDADO!! esto puede hacer que el juego crashee")
+		//os.Exit(1)
 	}
 
 	tasks = append(tasks, data.Task{
