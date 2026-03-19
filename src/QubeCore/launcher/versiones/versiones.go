@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"launcher/consola"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -107,7 +108,7 @@ func Mostrar_lista_Versiones(versiones_ []Versiones, ruta_versiones string, LIMI
 		}
 		contador++
 		if contador > LIMITE {
-			fmt.Println("\nse pueden elegir otras versiones ...")
+			consola.Imprimir_cartel("\nse pueden elegir otras versiones ...")
 			break
 		}
 

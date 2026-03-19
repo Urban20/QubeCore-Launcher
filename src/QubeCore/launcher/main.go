@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 )
 
 var (
@@ -60,7 +61,7 @@ func lanzar_versiones(bytes []byte, config configuracion.Configuracion_) {
 	versiones_ := versiones.Listar_Versiones(bytes)
 	versiones.Mostrar_lista_Versiones(versiones_, ruta_versiones, 10)
 
-	fmt.Print("seleccionar version > ")
+	fmt.Print("seleccionar version ➡ ")
 	fmt.Scanln(&version_elegida)
 
 	for _, v := range versiones_ {
@@ -96,6 +97,7 @@ func main() {
 			fmt.Scanln()
 		case consola.Opcion3:
 			fmt.Print("\n\nsaliendo del launcher ...\n")
+			time.Sleep(time.Second * 3)
 			ejecucion = false
 
 		}

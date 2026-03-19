@@ -20,16 +20,28 @@ var Opcion3 = "3) Salir"
 func Menu(opciones ...string) string {
 
 	seleccion := pterm.DefaultInteractiveSelect
+	seleccion.TextStyle = &pterm.Style{pterm.BgLightCyan, pterm.FgBlack}
 	seleccion.DefaultText = "SELECCIONAR opcion"
-	seleccion.Selector = ">> "
-	seleccion.FilterInputPlaceholder = "TIPEAR opcion"
+	seleccion.Selector = "➡ "
+	seleccion.SelectorStyle = &pterm.Style{pterm.FgWhite}
+	seleccion.FilterInputPlaceholder = "[TIPEAR opcion]"
 	op, _ := seleccion.WithOptions(opciones).Show()
 	return op
 
 }
 
+func Imprimir_cartel_2(texto, nombre_cartel string) {
+	// lo mismo que imprimir cartel pero adaptado a otro cartel distinto de info
+
+	cartel := pterm.Info
+	cartel.Prefix.Text = nombre_cartel
+	cartel.Println(texto)
+
+}
+
 func Imprimir_cartel(texto string) {
-	pterm.Info.Println(texto)
+	cartel := pterm.Info
+	cartel.Println(texto)
 }
 
 func Limpiar_consola() { // esto no funciona bien TODO
