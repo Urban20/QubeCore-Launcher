@@ -9,6 +9,7 @@ import (
 	"launcher/versiones"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 )
 
@@ -17,12 +18,30 @@ import (
 const MCDIR = "./.minecraft" // ruta del .minecraft (la misma que el programa)
 
 func FetchJSON(url string, target interface{}) error {
-	resp, err := http.Get(url)
+
+	// hace un get a la url y vuelca el resultado en target
+	// TODO: hay que cachear la info en caso de que ya este
+	version_json := path.Base(url)
+
+	ruta_target := filepath.Clean(filepath.Join(versiones.Ruta_versiones, "1.21.10", version_json))
+	fmt.Println("version ruta: ", ruta_target)
+	if versiones.Existe_archivo(ruta_target) {
+		// si ya existe leer de ahi
+		fmt.Println("se encontro la ruta al json")
+		arch, _ := os.Open(ruta_target)
+
+		return json.NewDecoder(arch).Decode(target)
+	}
+	fmt.Println("no se encontro la ruta al json de version")
+	resp, err := http.Get(url) // sino descarga de ahi y la prox vez mc lo cachea automaticamnete
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	// agregar para crear el archivo
+	// TODO TODO!!
+
 	return json.NewDecoder(resp.Body).Decode(target)
+
 }
 
 func Obtener_Json(versionURL string, vj *data.VersionJSON) {
