@@ -10,11 +10,20 @@ type Artifact struct {
 	URL  string `json:"url"`
 }
 
+type Classifiers struct {
+	Path string `json:"path"`
+	SHA1 string `json:"sha1"`
+	Size int64  `json:"size"`
+	URL  string `json:"url"`
+}
+
 type Library struct {
 	Downloads struct {
-		Artifact Artifact `json:"artifact"`
+		Artifact    Artifact               `json:"artifact"`
+		Classifiers map[string]Classifiers `json:"classifiers"`
 	} `json:"downloads"`
-	Rules []struct {
+	Natives map[string]string `json:"natives"`
+	Rules   []struct {
 		Action string `json:"action"`
 		OS     struct {
 			Name string `json:"name"`

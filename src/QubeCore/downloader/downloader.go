@@ -1,8 +1,11 @@
 package downloader
 
 import (
+	"QbCore/consola"
 	"QbCore/versiones"
+	so "downloader/SO"
 	"downloader/archivos"
+	"downloader/archivos/natives"
 	"downloader/data"
 	"downloader/goruntinas"
 
@@ -22,6 +25,8 @@ func Descargar_version(versionURL, usuario string, GORUNTINAS int) []string {
 	var ruta_target_versiones = filepath.Join(versiones.Ruta_versiones, carpeta_version)
 	var ruta_target_assets = filepath.Join(versiones.Ruta_minecraft, "assets", "indexes")
 
+	var SO = so.CurrentOS()
+
 	var vj data.VersionJSON
 
 	archivos.Obtener_Json(versionURL, ruta_target_versiones, &vj)
@@ -38,6 +43,8 @@ func Descargar_version(versionURL, usuario string, GORUNTINAS int) []string {
 
 	tasks = archivos.Maneja_Assets(tasks, vj, assetIndexPath, ruta_target_assets, GORUNTINAS)
 
+	tasks = natives.Maneja_Natives(tasks, vj, SO)
+
 	// Descargar todo
 	goruntinas.RunWorkers(tasks, GORUNTINAS)
 
@@ -45,6 +52,11 @@ func Descargar_version(versionURL, usuario string, GORUNTINAS int) []string {
 	cp := archivos.Crear_cp(clientPath, vj)
 
 	bat := archivos.Crear_comando(usuario, cp, vj) // vj = versionJson, cp = classpath
+
+	naterr := natives.Extraer_Natives(vj, SO)
+	if naterr != nil {
+		consola.Imprimir_error("hubo un problema al extraer natives")
+	}
 
 	return bat
 }

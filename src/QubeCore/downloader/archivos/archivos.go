@@ -65,8 +65,15 @@ func Obtener_Json(versionURL, ruta_target string, vj *data.VersionJSON) {
 func Crear_comando(usuario, cp string, vj data.VersionJSON) []string {
 
 	var asset = filepath.Join(MCDIR, "assets")
+	var dir_natives = filepath.Join(versiones.Ruta_versiones, vj.ID, "natives")
 
-	bat := []string{"-cp", cp, vj.MainClass,
+	jvm := []string{
+		"-Djava.library.path=" + dir_natives,
+		"-Dfile.encoding=UTF-8",
+	}
+
+	bat := []string{"-cp", cp, vj.MainClass, // TODO: en algun momento voy a tener que cambiar esto
+		// el hardcodeo es fragil
 		"--username", usuario,
 		"--version", vj.ID,
 		"--gameDir", MCDIR,
@@ -76,7 +83,9 @@ func Crear_comando(usuario, cp string, vj data.VersionJSON) []string {
 		"--accessToken", "0",
 		"--userType", "legacy"}
 
-	return bat
+	jvm = append(jvm, bat...)
+
+	return jvm
 }
 
 func Maneja_Assets(tasks []data.Task, vj data.VersionJSON, assetIndexPath, ruta_target string, GORUNTINAS int) []data.Task {
@@ -194,7 +203,7 @@ func Descargar_Manifiest() []byte {
 
 func Extraer_version(archivo string) string {
 
-	r, _ := regexp.Compile(`(\d+\.\d+(?:\.\d+)?)\.json`)
+	r, _ := regexp.Compile(`(\d+\.\d+(?:\.\d+)?)`)
 	return string(r.FindSubmatch([]byte(archivo))[1])
 
 }
