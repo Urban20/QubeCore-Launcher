@@ -2,6 +2,7 @@ package consola
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/pterm/pterm"
 	"github.com/pterm/pterm/putils"
@@ -63,7 +64,7 @@ func Iniciar_Pantalla() *pterm.AreaPrinter {
 }
 
 func Limpiar_consola(pantalla *pterm.AreaPrinter) { // esto no funciona bien TODO
-
+	fmt.Println(strings.Repeat("\n", 50))
 	fmt.Print("\033[H")
 	pantalla.Clear()
 
@@ -114,4 +115,12 @@ func Imprimir_Alerta(alerta ...string) {
 	cartel.Prefix.Text = "ADVERTENCIA"
 	cartel.Println(t)
 
+}
+
+func Mostrar_Opciones(usuario, ruta_java string, hilos int) {
+	opciones := fmt.Sprintf("Nombre de usuario: %s\nRuta de java: %s (en la env)\nHilos en paralelo: %d",
+		pterm.LightMagenta(usuario), ruta_java, hilos)
+
+	centro := pterm.DefaultCenter
+	centro.Println(opciones)
 }

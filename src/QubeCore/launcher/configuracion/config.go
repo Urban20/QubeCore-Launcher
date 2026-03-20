@@ -12,6 +12,8 @@ import (
 	"github.com/bigkevmcd/go-configparser"
 )
 
+var Config = Crear_ini()
+
 // valores por defecto
 const CONFIG = "./config.ini"
 
@@ -27,7 +29,7 @@ var seccion_concurrencia = "Concurrencia"
 var opcion_concurrencia = "Hilos"
 var Hilos_default = "50"
 
-type Configuracion_ struct {
+type Configuracion_ struct { // los valores de la config
 	Usuario   string
 	Ruta_Java string
 	Hilos     int

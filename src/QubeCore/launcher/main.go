@@ -13,8 +13,6 @@ import (
 	"time"
 )
 
-var config = configuracion.Crear_ini()
-
 const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
 var menu_opciones = []string{
 	consola.Opcion1,
@@ -31,7 +29,7 @@ func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versione
 
 	} else if v.Nombre == eleccion {
 
-		comando = downloader.Descargar_version(v.Url, config.Usuario, config.Hilos)
+		comando = downloader.Descargar_version(v.Url, configuracion.Config.Usuario, configuracion.Config.Hilos)
 		cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
 		nul, _ := os.Open(os.DevNull)
 		cmd.Stdout = nul
@@ -81,7 +79,7 @@ func lanzar_versiones(bytes []byte) {
 			break
 		}
 
-		buscar_instancia(&interrumpido, version_elegida, config.Ruta_Java, v)
+		buscar_instancia(&interrumpido, version_elegida, configuracion.Config.Ruta_Java, v)
 	}
 
 }
@@ -95,7 +93,7 @@ func main() {
 	for ejecucion {
 		fmt.Print("\033[?1049h")
 		consola.Limpiar_consola(consola.Pantalla)
-		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s, entrar a %s para modificarlo", config.Usuario, configuracion.CONFIG))
+		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s, entrar a %s para modificarlo", configuracion.Config.Usuario, configuracion.CONFIG))
 		consola.Imprimir_logo()
 		eleccion := consola.Menu(menu_opciones)
 
@@ -103,6 +101,17 @@ func main() {
 
 		case consola.Opcion1:
 			lanzar_versiones(bytes)
+
+		case consola.Opcion2:
+			consola.Limpiar_consola(consola.Pantalla)
+			consola.Mostrar_Opciones(
+				configuracion.Config.Usuario,
+				configuracion.Config.Ruta_Java,
+				configuracion.Config.Hilos,
+			)
+			fmt.Print("\n\n")
+			consola.Imprimir_cartel("ENTER para volver")
+			fmt.Scanln()
 
 		case consola.Opcion3:
 			fmt.Print("\n\nsaliendo del launcher ...\n")
