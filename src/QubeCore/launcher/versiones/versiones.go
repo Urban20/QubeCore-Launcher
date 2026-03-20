@@ -1,10 +1,10 @@
 package versiones
 
 import (
+	"QbCore/consola"
 	"encoding/json"
 	"fmt"
 	"io"
-	"launcher/consola"
 
 	"net/http"
 	"os"
@@ -27,7 +27,6 @@ type MapaVersiones struct {
 type Versiones struct { // esto contiene info de nombre (1.21.10 ejemplo , url url para descargar la version)
 	Nombre string
 	Url    string
-	Indice int
 }
 
 // obtiene la url y devulve nil o bytes
@@ -82,7 +81,6 @@ func Listar_Versiones(bytes []byte) []Versiones {
 
 	}
 
-	var indice int
 	for _, mapa := range v.Versions {
 
 		version_ := mapa["id"]
@@ -92,9 +90,8 @@ func Listar_Versiones(bytes []byte) []Versiones {
 		if tipo == "release" {
 
 			Versiones_disponibles = append(Versiones_disponibles, Versiones{
-				Nombre: version_, Url: url_, Indice: indice,
+				Nombre: version_, Url: url_,
 			})
-			indice++
 
 		}
 
@@ -117,21 +114,12 @@ func Existe_version(version string) bool {
 
 }
 
-func Mostrar_lista_Versiones(versiones_ []Versiones, ruta_versiones string, LIMITE int) {
-	var contador int
-	for _, version := range versiones_ {
+func Menu_Versiones(versiones []Versiones) string {
 
-		if Existe_version(version.Nombre) {
-			fmt.Printf("%d) %s   [instalada]\n", version.Indice, version.Nombre)
-		} else {
-			fmt.Printf("%d) %s\n", version.Indice, version.Nombre)
-		}
-		contador++
-		if contador > LIMITE {
-			consola.Imprimir_cartel("\nse pueden elegir otras versiones ...")
-			break
-		}
+	var versiones_str = []string{"volver"}
 
+	for _, version := range versiones {
+		versiones_str = append(versiones_str, version.Nombre)
 	}
-
+	return consola.Menu(versiones_str)
 }

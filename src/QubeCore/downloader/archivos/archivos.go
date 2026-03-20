@@ -1,12 +1,13 @@
 package archivos
 
 import (
+	"QbCore/consola"
+	"QbCore/versiones"
 	so "downloader/SO"
 	"downloader/data"
 	"encoding/json"
 	"fmt"
-	"launcher/consola"
-	"launcher/versiones"
+
 	"net/http"
 	"os"
 	"path"

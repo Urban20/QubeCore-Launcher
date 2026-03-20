@@ -19,7 +19,7 @@ var Opcion3 = "3) Salir"
 
 var Pantalla = Iniciar_Pantalla()
 
-func Menu(opciones ...string) string {
+func Menu(opciones []string) string {
 
 	seleccion := pterm.DefaultInteractiveSelect
 	seleccion.TextStyle = &pterm.Style{pterm.BgLightCyan, pterm.FgBlack}
@@ -41,9 +41,15 @@ func Imprimir_cartel_2(texto, nombre_cartel string) {
 
 }
 
-func Imprimir_cartel(texto string) {
+func Imprimir_cartel(texto ...string) {
+	var t string
+	for _, palabra := range texto {
+
+		t += palabra
+	}
+
 	cartel := pterm.Info
-	cartel.Println(texto)
+	cartel.Println(t)
 }
 
 func Iniciar_Pantalla() *pterm.AreaPrinter {
@@ -80,5 +86,33 @@ func Cartel_Usuario(usuario string) {
 	cartel.MessageStyle = &pterm.Style{pterm.FgLightWhite}
 	cartel.Println(usuario)
 	fmt.Print("\n\n\n")
+
+}
+
+func Imprimir_error(errores ...string) {
+	// llamar con error.Error()
+	var t string
+
+	for _, palabra := range errores {
+
+		t += palabra
+	}
+
+	cartel := pterm.Error
+	cartel.Println(t)
+
+}
+
+func Imprimir_Alerta(alerta ...string) {
+	var t string
+
+	for _, palabra := range alerta {
+
+		t += palabra
+	}
+
+	cartel := pterm.Warning
+	cartel.Prefix.Text = "ADVERTENCIA"
+	cartel.Println(t)
 
 }

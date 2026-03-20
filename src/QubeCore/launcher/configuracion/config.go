@@ -1,8 +1,8 @@
 package configuracion
 
 import (
+	"QbCore/versiones"
 	"fmt"
-	"launcher/versiones"
 
 	"os"
 	"time"

@@ -1,12 +1,13 @@
 package main
 
 import (
+	"QbCore/configuracion"
+	"QbCore/consola"
+	"QbCore/versiones"
+
 	"downloader"
 	"downloader/archivos"
 	"fmt"
-	"launcher/configuracion"
-	"launcher/consola"
-	"launcher/versiones"
 	"os"
 	"os/exec"
 	"time"
@@ -14,20 +15,29 @@ import (
 
 const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
 
-func buscar_instancia(eleccion, usuario, ruta_java string, v versiones.Versiones) {
+func buscar_instancia(interrumpido *bool, eleccion, usuario, ruta_java string, v versiones.Versiones) {
 	var comando []string
 
-	if v.Nombre == eleccion {
+	if v.Nombre == "volver" {
+
+		*interrumpido = true
+
+	} else if v.Nombre == eleccion {
 
 		comando = downloader.Descargar_version(v.Url, usuario)
 		cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
 		nul, _ := os.Open(os.DevNull)
 		cmd.Stdout = nul
 		defer nul.Close()
+		consola.Imprimir_cartel("iniciando instancia...")
 		cmderr := cmd.Run()
 
 		if cmderr != nil {
-			fmt.Println(cmderr)
+			consola.Imprimir_error("hubo un problema al lanzar la version: ", cmderr.Error())
+			fmt.Print("\n\n")
+			consola.Imprimir_Alerta("el problema puede ser causado por una version de java incompatible")
+			fmt.Scanln()
+			*interrumpido = true
 		}
 
 	}
@@ -51,16 +61,20 @@ func cargar_version() []byte {
 
 func lanzar_versiones(bytes []byte, config configuracion.Configuracion_) {
 
+	var interrumpido = false
+
 	var version_elegida string
 	versiones_ := versiones.Listar_Versiones(bytes)
-	versiones.Mostrar_lista_Versiones(versiones_, versiones.Ruta_versiones, 10)
 
-	fmt.Print("seleccionar version ➡ ")
-	fmt.Scanln(&version_elegida)
+	version_elegida = versiones.Menu_Versiones(versiones_)
 
 	for _, v := range versiones_ {
 
-		buscar_instancia(version_elegida, config.Usuario, config.Ruta_Java, v)
+		if interrumpido {
+			break
+		}
+
+		buscar_instancia(&interrumpido, version_elegida, config.Usuario, config.Ruta_Java, v)
 	}
 
 }
@@ -72,14 +86,13 @@ func main() {
 	config := configuracion.Leer_config()
 
 	bytes := cargar_version()
-	fmt.Println("Usuario iniciado como: ", config.Usuario) // TODO: decorar
 
 	for ejecucion {
 
 		consola.Limpiar_consola(consola.Pantalla)
-		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s", config.Usuario))
+		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s, entrar a %s para modificarlo", config.Usuario, configuracion.CONFIG))
 		consola.Imprimir_logo()
-		eleccion := consola.Menu(consola.Opcion1, consola.Opcion2, consola.Opcion3)
+		eleccion := consola.Menu([]string{consola.Opcion1, consola.Opcion2, consola.Opcion3})
 
 		switch eleccion {
 

@@ -1,10 +1,11 @@
 package downloader
 
 import (
+	"QbCore/versiones"
 	"downloader/archivos"
 	"downloader/data"
 	"downloader/goruntinas"
-	"launcher/versiones"
+
 	"path"
 
 	"path/filepath"
