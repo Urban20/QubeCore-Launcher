@@ -1,5 +1,14 @@
 
-mejorar configuracion
-agregar una opcion para forzar la descarga del json (actualizar listado)
-agregar menu [cookeando]
-hacer una funcion que verifique si hay internet antes de descargar
+1)mejorar configuracion
+- agregar parametros para maneja la ram de la jvm
+
+
+2)agregar una opcion para forzar la descarga del json (actualizar listado)
+
+3)hacer una funcion que verifique si hay internet antes de descargar
+
+
+
+
+A LARGO PLAZO!!
+quiza sea mejor cambiar como se lanza el juego con las flags como esta ahora
