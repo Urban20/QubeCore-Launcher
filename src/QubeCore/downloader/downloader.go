@@ -30,7 +30,7 @@ func Descargar_version(versionURL, usuario string, GORUNTINAS int) []string {
 	var vj data.VersionJSON
 
 	archivos.Obtener_Json(versionURL, ruta_target_versiones, &vj)
-	clientPath := filepath.Join(archivos.MCDIR, "versions", vj.ID, vj.ID+".jar") // ruta versions
+	clientPath := filepath.Join(versiones.Ruta_minecraft, "versions", vj.ID, vj.ID+".jar") // ruta versions
 	// client JAR
 	tasks = archivos.Cliente_JAR(tasks, vj, clientPath)
 
@@ -39,7 +39,7 @@ func Descargar_version(versionURL, usuario string, GORUNTINAS int) []string {
 
 	tasks = archivos.Maneja_Librerias(tasks, vj)
 
-	assetIndexPath := filepath.Join(archivos.MCDIR, "assets", "indexes", vj.AssetIndex.ID+".json")
+	assetIndexPath := filepath.Join(versiones.Ruta_minecraft, "assets", "indexes", vj.AssetIndex.ID+".json")
 
 	tasks = archivos.Maneja_Assets(tasks, vj, assetIndexPath, ruta_target_assets, GORUNTINAS)
 

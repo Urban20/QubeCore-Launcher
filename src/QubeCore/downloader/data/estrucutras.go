@@ -3,14 +3,7 @@ package data
 // este modulo tiene las estructuras que se necesitan para parsear el json de manifiest.json
 // para cada version
 
-type Artifact struct {
-	Path string `json:"path"`
-	SHA1 string `json:"sha1"`
-	Size int64  `json:"size"`
-	URL  string `json:"url"`
-}
-
-type Classifiers struct {
+type Artifact struct { // estructura artifact se usa para si mismo y para classifiers
 	Path string `json:"path"`
 	SHA1 string `json:"sha1"`
 	Size int64  `json:"size"`
@@ -19,8 +12,8 @@ type Classifiers struct {
 
 type Library struct {
 	Downloads struct {
-		Artifact    Artifact               `json:"artifact"`
-		Classifiers map[string]Classifiers `json:"classifiers"`
+		Artifact    Artifact            `json:"artifact"`
+		Classifiers map[string]Artifact `json:"classifiers"`
 	} `json:"downloads"`
 	Natives map[string]string `json:"natives"`
 	Rules   []struct {

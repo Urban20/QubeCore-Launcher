@@ -17,8 +17,6 @@ import (
 
 // maneja la logica de obtencion de json y carpeta del juego
 
-const MCDIR = "./.minecraft" // ruta del .minecraft (la misma que el programa)
-
 func FetchJSON(url, ruta_target string, target interface{}) error {
 
 	// hace un get a la url y vuelca el resultado en target
@@ -64,7 +62,7 @@ func Obtener_Json(versionURL, ruta_target string, vj *data.VersionJSON) {
 
 func Crear_comando(usuario, cp string, vj data.VersionJSON) []string {
 
-	var asset = filepath.Join(MCDIR, "assets")
+	var asset = filepath.Join(versiones.Ruta_minecraft, "assets")
 	var dir_natives = filepath.Join(versiones.Ruta_versiones, vj.ID, "natives")
 
 	jvm := []string{
@@ -76,7 +74,7 @@ func Crear_comando(usuario, cp string, vj data.VersionJSON) []string {
 		// el hardcodeo es fragil
 		"--username", usuario,
 		"--version", vj.ID,
-		"--gameDir", MCDIR,
+		"--gameDir", versiones.Ruta_minecraft,
 		"--assetsDir", asset,
 		"--assetIndex", vj.AssetIndex.ID,
 		"--uuid", "00000000-0000-0000-0000-000000000000",
@@ -94,7 +92,7 @@ func Maneja_Assets(tasks []data.Task, vj data.VersionJSON, assetIndexPath, ruta_
 	if err := FetchJSON(vj.AssetIndex.URL, ruta_target, &ai); err != nil {
 		fmt.Println("Error lanzando el indice de assets:", err)
 		fmt.Println("CUIDADO!! esto puede hacer que el juego crashee")
-		//os.Exit(1)
+
 	}
 
 	tasks = append(tasks, data.Task{
@@ -108,7 +106,7 @@ func Maneja_Assets(tasks []data.Task, vj data.VersionJSON, assetIndexPath, ruta_
 		hash := obj.Hash
 		prefix := hash[:2]
 		url := fmt.Sprintf("https://resources.download.minecraft.net/%s/%s", prefix, hash)
-		dest := filepath.Join(MCDIR, "assets", "objects", prefix, hash)
+		dest := filepath.Join(versiones.Ruta_minecraft, "assets", "objects", prefix, hash)
 		tasks = append(tasks, data.Task{
 
 			URL:      url,
@@ -137,7 +135,7 @@ func Maneja_Librerias(tasks []data.Task, vj data.VersionJSON) []data.Task {
 		}
 		tasks = append(tasks, data.Task{
 			URL:      a.URL,
-			DestPath: filepath.Join(MCDIR, "libraries", filepath.FromSlash(a.Path)),
+			DestPath: filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(a.Path)),
 			SHA1:     a.SHA1,
 			Label:    a.Path,
 		})
@@ -148,7 +146,7 @@ func Maneja_Librerias(tasks []data.Task, vj data.VersionJSON) []data.Task {
 
 func Guarda_Json(tasks []data.Task, vj data.VersionJSON, versionURL string) []data.Task {
 
-	versionJSONPath := filepath.Join(MCDIR, "versions", vj.ID, vj.ID+".json")
+	versionJSONPath := filepath.Join(versiones.Ruta_minecraft, "versions", vj.ID, vj.ID+".json")
 	tasks = append(tasks, data.Task{
 		URL:      versionURL,
 		DestPath: versionJSONPath,
@@ -179,7 +177,7 @@ func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = cla
 		if a.URL == "" {
 			continue
 		}
-		cp += string(filepath.ListSeparator) + filepath.Join(MCDIR, "libraries", filepath.FromSlash(a.Path))
+		cp += string(filepath.ListSeparator) + filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(a.Path))
 	}
 	return cp
 }
