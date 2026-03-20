@@ -17,6 +17,8 @@ var Opcion1 = "1) Lanzar version"
 var Opcion2 = "2) Ver configuracion"
 var Opcion3 = "3) Salir"
 
+var Pantalla = Iniciar_Pantalla()
+
 func Menu(opciones ...string) string {
 
 	seleccion := pterm.DefaultInteractiveSelect
@@ -44,10 +46,21 @@ func Imprimir_cartel(texto string) {
 	cartel.Println(texto)
 }
 
-func Limpiar_consola() { // esto no funciona bien TODO
+func Iniciar_Pantalla() *pterm.AreaPrinter {
 
-	area, _ := pterm.DefaultArea.Start()
-	area.Clear()
+	pantalla := pterm.AreaPrinter{}
+	pantalla.Fullscreen = true
+	pantalla.Center = true
+
+	p, _ := pantalla.Start()
+	return p
+}
+
+func Limpiar_consola(pantalla *pterm.AreaPrinter) { // esto no funciona bien TODO
+
+	fmt.Print("\033[H")
+	fmt.Print("\033[?1049h")
+	pantalla.Clear()
 
 }
 
@@ -57,4 +70,15 @@ func Imprimir_logo() {
 	logo, _ := pterm.DefaultBigText.WithLetters(putils.LettersFromString(LAUNCHER)).Srender()
 	pterm.DefaultCenter.Println(logo)
 	pterm.DefaultCenter.WithCenterEachLineSeparately().Println(banner)
+}
+
+func Cartel_Usuario(usuario string) {
+
+	cartel := pterm.Info
+	cartel.Prefix.Text = "USUARIO"
+	cartel.Prefix.Style = &pterm.Style{pterm.BgLightMagenta, pterm.FgBlack}
+	cartel.MessageStyle = &pterm.Style{pterm.FgLightWhite}
+	cartel.Println(usuario)
+	fmt.Print("\n\n\n")
+
 }

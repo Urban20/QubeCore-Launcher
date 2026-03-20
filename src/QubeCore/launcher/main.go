@@ -74,10 +74,11 @@ func main() {
 	bytes := cargar_version()
 	fmt.Println("Usuario iniciado como: ", config.Usuario) // TODO: decorar
 
-	consola.Imprimir_logo()
-
 	for ejecucion {
-		consola.Limpiar_consola()
+
+		consola.Limpiar_consola(consola.Pantalla)
+		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s", config.Usuario))
+		consola.Imprimir_logo()
 		eleccion := consola.Menu(consola.Opcion1, consola.Opcion2, consola.Opcion3)
 
 		switch eleccion {
@@ -95,6 +96,6 @@ func main() {
 		}
 
 		// esto es para el lanzamiento de versiones
-		consola.Limpiar_consola()
+		consola.Limpiar_consola(consola.Pantalla)
 	}
 }
