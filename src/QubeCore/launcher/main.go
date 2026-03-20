@@ -13,6 +13,8 @@ import (
 	"time"
 )
 
+var config = configuracion.Crear_ini()
+
 const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
 var menu_opciones = []string{
 	consola.Opcion1,
@@ -20,7 +22,7 @@ var menu_opciones = []string{
 	consola.Opcion3,
 	"buscar actualizaciones de versiones"}
 
-func buscar_instancia(interrumpido *bool, eleccion, usuario, ruta_java string, v versiones.Versiones) {
+func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versiones.Versiones) {
 	var comando []string
 
 	if v.Nombre == "volver" {
@@ -29,7 +31,7 @@ func buscar_instancia(interrumpido *bool, eleccion, usuario, ruta_java string, v
 
 	} else if v.Nombre == eleccion {
 
-		comando = downloader.Descargar_version(v.Url, usuario)
+		comando = downloader.Descargar_version(v.Url, config.Usuario, config.Hilos)
 		cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
 		nul, _ := os.Open(os.DevNull)
 		cmd.Stdout = nul
@@ -64,7 +66,7 @@ func cargar_version() []byte {
 	return bytes
 }
 
-func lanzar_versiones(bytes []byte, config configuracion.Configuracion_) {
+func lanzar_versiones(bytes []byte) {
 
 	var interrumpido = false
 
@@ -79,16 +81,14 @@ func lanzar_versiones(bytes []byte, config configuracion.Configuracion_) {
 			break
 		}
 
-		buscar_instancia(&interrumpido, version_elegida, config.Usuario, config.Ruta_Java, v)
+		buscar_instancia(&interrumpido, version_elegida, config.Ruta_Java, v)
 	}
 
 }
 
 func main() {
-	configuracion.Crear_ini()
-	var ejecucion bool = true
 
-	config := configuracion.Leer_config()
+	var ejecucion bool = true
 
 	bytes := cargar_version()
 
@@ -102,7 +102,7 @@ func main() {
 		switch eleccion {
 
 		case consola.Opcion1:
-			lanzar_versiones(bytes, config)
+			lanzar_versiones(bytes)
 
 		case consola.Opcion3:
 			fmt.Print("\n\nsaliendo del launcher ...\n")

@@ -13,12 +13,8 @@ import (
 
 // Downloader maneja la descarga de archivos y el lanzamiento del juego
 
-const (
-	GORUNTINAS = 1000
-)
-
 // descarga la carpeta justo con la version y retorna el comando de lanzamiento del juego
-func Descargar_version(versionURL, usuario string) []string {
+func Descargar_version(versionURL, usuario string, GORUNTINAS int) []string {
 
 	var tasks []data.Task
 	var version_json = path.Base(versionURL)
