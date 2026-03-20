@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"strings"
 
 	"net/http"
 	"os"
@@ -88,6 +89,12 @@ func Listar_Versiones(bytes []byte) []Versiones {
 		tipo := mapa["type"]
 
 		if tipo == "release" {
+
+			if Existe_version(version_) {
+
+				version_ = version_ + strings.Repeat(" ", 4) + "[instalada]"
+
+			}
 
 			Versiones_disponibles = append(Versiones_disponibles, Versiones{
 				Nombre: version_, Url: url_,

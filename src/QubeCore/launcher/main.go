@@ -14,6 +14,11 @@ import (
 )
 
 const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
+var menu_opciones = []string{
+	consola.Opcion1,
+	consola.Opcion2,
+	consola.Opcion3,
+	"buscar actualizaciones de versiones"}
 
 func buscar_instancia(interrumpido *bool, eleccion, usuario, ruta_java string, v versiones.Versiones) {
 	var comando []string
@@ -88,23 +93,26 @@ func main() {
 	bytes := cargar_version()
 
 	for ejecucion {
-
+		fmt.Print("\033[?1049h")
 		consola.Limpiar_consola(consola.Pantalla)
 		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s, entrar a %s para modificarlo", config.Usuario, configuracion.CONFIG))
 		consola.Imprimir_logo()
-		eleccion := consola.Menu([]string{consola.Opcion1, consola.Opcion2, consola.Opcion3})
+		eleccion := consola.Menu(menu_opciones)
 
 		switch eleccion {
 
 		case consola.Opcion1:
 			lanzar_versiones(bytes, config)
-		case consola.Opcion2:
-			fmt.Print("\n\nno implementado todavia\n") // TODO: hacer el display de config
-			fmt.Scanln()
+
 		case consola.Opcion3:
 			fmt.Print("\n\nsaliendo del launcher ...\n")
 			time.Sleep(time.Second * 3)
 			ejecucion = false
+
+		default:
+			fmt.Print("\n\n")
+			consola.Imprimir_Alerta("no implementado todavia") // TODO: hacer el display de config
+			fmt.Scanln()
 
 		}
 

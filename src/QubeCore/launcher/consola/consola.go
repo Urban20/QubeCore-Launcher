@@ -15,7 +15,7 @@ const (
 
 var Opcion1 = "1) Lanzar version"
 var Opcion2 = "2) Ver configuracion"
-var Opcion3 = "3) Salir"
+var Opcion3 = "3) Salir" // automatizar recoleccion en un slice
 
 var Pantalla = Iniciar_Pantalla()
 
@@ -65,7 +65,6 @@ func Iniciar_Pantalla() *pterm.AreaPrinter {
 func Limpiar_consola(pantalla *pterm.AreaPrinter) { // esto no funciona bien TODO
 
 	fmt.Print("\033[H")
-	fmt.Print("\033[?1049h")
 	pantalla.Clear()
 
 }
