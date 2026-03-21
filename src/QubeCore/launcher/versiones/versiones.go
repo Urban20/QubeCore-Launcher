@@ -12,8 +12,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-
-	"github.com/pterm/pterm"
 )
 
 var (
@@ -74,8 +72,15 @@ func Guardar_versiones(data []byte) {
 
 }
 
-// busca las versiones release y retorna una lista de estructuras
-func Listar_Versiones(bytes []byte) []Versiones {
+// busca las versiones release o snapshot y retorna una lista de estructuras
+func Listar_Versiones(bytes []byte, tipo string) []Versiones {
+
+	/*
+		bytes -> bytes del json de versiones
+		tipo -> tipo de version: release o snapshot
+
+	*/
+
 	var Versiones_disponibles []Versiones
 
 	v := MapaVersiones{}
@@ -92,17 +97,17 @@ func Listar_Versiones(bytes []byte) []Versiones {
 
 		version_ := mapa["id"]
 		url_ := mapa["url"]
-		tipo := mapa["type"]
+		tipo_json := mapa["type"]
 
-		if tipo == "release" {
+		if tipo_json == tipo {
 
 			if Es_version_antigua(version_) {
 
-				version_ = version_ + espacios + pterm.LightYellow("[posibles problemas al lanzar]")
+				version_ = version_ + espacios + consola.Resaltar_texto_amarillo("[posibles problemas al lanzar]")
 
 			} else if Existe_version(version_) {
 
-				version_ = version_ + espacios + pterm.Magenta("[instalada]")
+				version_ = version_ + espacios + consola.Resaltar_texto("[instalada]")
 
 			}
 
@@ -133,7 +138,7 @@ func Existe_version(version string) bool {
 
 func Menu_Versiones(versiones []Versiones) string {
 
-	var versiones_str = []string{"volver"}
+	var versiones_str = []string{consola.Resaltar_texto("volver")}
 
 	for _, version := range versiones {
 		versiones_str = append(versiones_str, version.Nombre)

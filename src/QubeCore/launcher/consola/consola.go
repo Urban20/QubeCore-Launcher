@@ -125,3 +125,15 @@ func Mostrar_Opciones(usuario, ruta_java, java_ram string, hilos int) {
 	centro := pterm.DefaultCenter
 	centro.Println(opciones)
 }
+
+// resalta texto con un color celeste y letras negras
+func Resaltar_texto(texto string) string {
+
+	return pterm.FgLightCyan.Sprint(texto)
+
+}
+
+func Resaltar_texto_amarillo(texto string) string {
+
+	return pterm.FgLightYellow.Sprint(texto)
+}

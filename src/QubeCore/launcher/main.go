@@ -68,7 +68,10 @@ func lanzar_versiones(bytes []byte) {
 	var interrumpido = false
 
 	var version_elegida string
-	versiones_ := versiones.Listar_Versiones(bytes)
+
+	tipo := consola.Menu([]string{"release", "snapshot"})
+
+	versiones_ := versiones.Listar_Versiones(bytes, tipo)
 
 	version_elegida = versiones.Menu_Versiones(versiones_)
 
