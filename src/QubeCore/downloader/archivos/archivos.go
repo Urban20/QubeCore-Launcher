@@ -201,7 +201,7 @@ func Descargar_Manifiest() []byte {
 
 func Extraer_version(archivo string) string {
 
-	r, _ := regexp.Compile(`(\d+\.\d+(?:\.\d+)?)`)
-	return string(r.FindSubmatch([]byte(archivo))[1])
+	reg := regexp.MustCompile(`(\d+\.\d+(?:\.\d+)?)`)
+	return reg.FindString(archivo)
 
 }
