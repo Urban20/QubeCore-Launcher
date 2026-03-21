@@ -1,6 +1,7 @@
 package red
 
 import (
+	"QbCore/versiones"
 	"crypto/sha1"
 	"encoding/hex"
 	"io"
@@ -10,6 +11,7 @@ import (
 )
 
 func Sha1File(path string) (string, error) {
+	// obtiene el sha1 de un archivo del sistema
 	f, err := os.Open(path)
 	if err != nil {
 		return "", err
@@ -23,9 +25,17 @@ func Sha1File(path string) (string, error) {
 }
 
 func DownloadFile(url, destPath, expectedSHA1 string) error {
+
+	if expectedSHA1 == "" && versiones.Existe_archivo(destPath) {
+
+		return nil
+	}
+
 	// omite si ya existe
-	if expectedSHA1 != "" {
-		if got, err := Sha1File(destPath); err == nil && got == expectedSHA1 {
+	if expectedSHA1 != "" { // esta seccion evita que se redescarguen archivos
+		got, err := Sha1File(destPath)
+
+		if err == nil && got == expectedSHA1 { //compara el archivo del sistema con el esperado, si es asi no hace nada
 			return nil
 		}
 	}

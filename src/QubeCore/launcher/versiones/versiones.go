@@ -122,13 +122,14 @@ func Listar_Versiones(bytes []byte, tipo string) []Versiones {
 }
 
 func Existe_archivo(archivo string) bool {
-	_, error := os.Stat(archivo)
+	_, error_ := os.Stat(archivo)
 
-	return error == nil
+	return error_ == nil
 
 }
 
-func Existe_version(version string) bool {
+// retorna true si la carpeta de la version existe
+func Existe_version(version string) bool { // TODO: hacer un test de casos para esto
 
 	v := filepath.Join(Ruta_versiones, version)
 
