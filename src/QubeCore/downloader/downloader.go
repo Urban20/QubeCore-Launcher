@@ -17,7 +17,7 @@ import (
 // Downloader maneja la descarga de archivos y el lanzamiento del juego
 
 // descarga la carpeta justo con la version y retorna el comando de lanzamiento del juego
-func Descargar_version(versionURL, usuario string, GORUNTINAS int) []string {
+func Descargar_version(versionURL, usuario, java_ram string, GORUNTINAS int) []string {
 
 	var tasks []data.Task
 	var version_json = path.Base(versionURL)
@@ -51,7 +51,7 @@ func Descargar_version(versionURL, usuario string, GORUNTINAS int) []string {
 	// Armar classpath: client.jar + cada library permitida
 	cp := archivos.Crear_cp(clientPath, vj)
 
-	bat := archivos.Crear_comando(usuario, cp, vj) // vj = versionJson, cp = classpath
+	bat := archivos.Crear_comando(usuario, cp, java_ram, vj) // vj = versionJson, cp = classpath
 
 	naterr := natives.Extraer_Natives(vj, SO)
 	if naterr != nil {

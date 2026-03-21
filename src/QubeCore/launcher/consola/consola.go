@@ -118,9 +118,9 @@ func Imprimir_Alerta(alerta ...string) {
 
 }
 
-func Mostrar_Opciones(usuario, ruta_java string, hilos int) {
-	opciones := fmt.Sprintf("Nombre de usuario: %s\nRuta de java: %s (en la env)\nHilos en paralelo: %d",
-		pterm.LightMagenta(usuario), ruta_java, hilos)
+func Mostrar_Opciones(usuario, ruta_java, java_ram string, hilos int) {
+	opciones := fmt.Sprintf("Nombre de usuario: %s\nRuta de java: %s (en la env)\nHilos en paralelo: %d\nRam de jvm: %s",
+		pterm.LightMagenta(usuario), ruta_java, hilos, java_ram)
 
 	centro := pterm.DefaultCenter
 	centro.Println(opciones)

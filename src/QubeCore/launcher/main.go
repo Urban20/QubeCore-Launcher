@@ -28,7 +28,7 @@ func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versione
 
 	} else if v.Nombre == eleccion {
 
-		comando = downloader.Descargar_version(v.Url, configuracion.Config.Usuario, configuracion.Config.Hilos)
+		comando = downloader.Descargar_version(v.Url, configuracion.Config.Usuario, configuracion.Config.Ram, configuracion.Config.Hilos)
 		cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
 		nul, _ := os.Open(os.DevNull)
 		cmd.Stdout = nul
@@ -131,6 +131,7 @@ func main() {
 			consola.Mostrar_Opciones(
 				configuracion.Config.Usuario,
 				configuracion.Config.Ruta_Java,
+				configuracion.Config.Ram,
 				configuracion.Config.Hilos,
 			)
 			fmt.Print("\n\n")

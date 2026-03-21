@@ -59,12 +59,13 @@ func Obtener_Json(versionURL, ruta_target string, vj *data.VersionJSON) {
 	fmt.Printf("Version: %s | Assets: %s\n\n", vj.ID, vj.AssetIndex.ID)
 }
 
-func Crear_comando(usuario, cp string, vj data.VersionJSON) []string {
+func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 
 	var asset = filepath.Join(versiones.Ruta_minecraft, "assets")
 	var dir_natives = filepath.Join(versiones.Ruta_versiones, vj.ID, "natives")
 
 	jvm := []string{
+		"-Xmx" + java_Ram,
 		"-Djava.library.path=" + dir_natives,
 		"-Dfile.encoding=UTF-8",
 	}

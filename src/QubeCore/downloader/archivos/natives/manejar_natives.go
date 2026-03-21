@@ -17,6 +17,11 @@ import (
 
 // TODO: revisar todo esto
 
+/*
+pregunta si el archivo es necesario para el sistema operativo, si no es asi lo
+
+ignora, emite un error que luego es ignorado
+*/
 func gestionar_natives(lib data.Library, SO string) (data.Artifact, error) {
 
 	var error_ = errors.New("archivo no disponible")
@@ -94,7 +99,7 @@ func Extraer_Natives(vj data.VersionJSON, OS string) error { // esta funcion ext
 				continue
 			}
 			dest := filepath.Join(nativesDir, filepath.Base(f.Name))
-			rc, _ := f.Open()
+			rc, _ := f.Open() //copia los distintos archivos
 			out, _ := os.Create(dest)
 			_, err := io.Copy(out, rc)
 			if err != nil {
@@ -106,7 +111,7 @@ func Extraer_Natives(vj data.VersionJSON, OS string) error { // esta funcion ext
 			out.Close()
 			rc.Close()
 		}
-		r.Close()
+		defer r.Close()
 	}
 	return nil
 }
