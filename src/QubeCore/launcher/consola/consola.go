@@ -14,9 +14,10 @@ const (
 	LAUNCHER = "QubeCore"
 )
 
-var Opcion1 = "1) Lanzar version"
-var Opcion2 = "2) Ver configuracion"
-var Opcion3 = "3) Salir" // automatizar recoleccion en un slice
+var Opcion1 = "lanzar version"
+var Opcion2 = "ver configuracion"
+var Opcion3 = "actualizar lista de versiones"
+var Opcion4 = "salir"
 
 var Pantalla = Iniciar_Pantalla()
 

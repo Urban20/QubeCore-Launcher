@@ -1,7 +1,6 @@
 package archivos
 
 import (
-	"QbCore/consola"
 	"QbCore/versiones"
 	so "downloader/SO"
 	"downloader/data"
@@ -185,7 +184,6 @@ func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = cla
 func Descargar_Manifiest() []byte {
 
 	// descarga, guarda y retorna bytes
-	consola.Imprimir_cartel("json no encontrado, descargando\n")
 
 	bytes := versiones.Obtener_data(versiones.VERSIONES_JSON)
 

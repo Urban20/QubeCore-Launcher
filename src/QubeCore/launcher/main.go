@@ -13,12 +13,11 @@ import (
 	"time"
 )
 
-const LIMITE = 20 // es un limitador de impresion para no llenar la consola de versiones
-var menu_opciones = []string{
+var menu_opciones = formatear_opciones_menu(
 	consola.Opcion1,
 	consola.Opcion2,
 	consola.Opcion3,
-	"buscar actualizaciones de versiones"}
+	consola.Opcion4)
 
 func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versiones.Versiones) {
 	var comando []string
@@ -84,6 +83,28 @@ func lanzar_versiones(bytes []byte) {
 
 }
 
+func formatear_opciones_menu(opciones ...string) []string {
+
+	var formateados = []string{}
+
+	for n, op := range opciones {
+		n++
+
+		formateados = append(formateados, fmt.Sprintf("%d) %s", n, op))
+
+	}
+	return formateados
+
+}
+
+func setear_opciones() {
+	consola.Opcion1 = menu_opciones[0]
+	consola.Opcion2 = menu_opciones[1]
+	consola.Opcion3 = menu_opciones[2]
+	consola.Opcion4 = menu_opciones[3]
+
+}
+
 func main() {
 
 	var ejecucion bool = true
@@ -95,6 +116,9 @@ func main() {
 		consola.Limpiar_consola(consola.Pantalla)
 		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s, entrar a %s para modificarlo", configuracion.Config.Usuario, configuracion.CONFIG))
 		consola.Imprimir_logo()
+
+		setear_opciones()
+
 		eleccion := consola.Menu(menu_opciones)
 
 		switch eleccion {
@@ -112,8 +136,14 @@ func main() {
 			fmt.Print("\n\n")
 			consola.Imprimir_cartel("ENTER para volver")
 			fmt.Scanln()
-
 		case consola.Opcion3:
+
+			archivos.Descargar_Manifiest()
+			consola.Imprimir_cartel("se debe reiniciar el launcher ...\ncerrando programa")
+			time.Sleep(3 * time.Second)
+			ejecucion = false
+
+		case consola.Opcion4:
 			fmt.Print("\n\nsaliendo del launcher ...\n")
 			time.Sleep(time.Second * 3)
 			ejecucion = false
