@@ -11,7 +11,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"regexp"
 )
 
 // maneja la logica de obtencion de json y carpeta del juego
@@ -195,12 +194,5 @@ func Descargar_Manifiest() []byte {
 	versiones.Guardar_versiones(bytes)
 
 	return bytes
-
-}
-
-func Extraer_version(archivo string) string {
-
-	reg := regexp.MustCompile(`(\d+\.\d+(?:\.\d+)?)`)
-	return reg.FindString(archivo)
 
 }

@@ -7,8 +7,8 @@ import (
 
 func TestNum_version(t *testing.T) {
 	tests := []struct {
-		name string // description of this test case
-		// Named input parameters for target function.
+		name string
+
 		version string
 		want    string
 	}{
@@ -51,6 +51,32 @@ func TestEs_version_antigua(t *testing.T) {
 
 			if got != tt.want {
 				t.Errorf("Es_version_antigua() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestExtraer_version(t *testing.T) {
+	tests := []struct {
+		name string
+
+		texto string
+		want  string
+	}{
+
+		{name: "url", texto: "https://piston-meta.mojang.com/v1/packages/ed5d8789ed29872ea2ef1c348302b0c55e3f3468/1.7.10.json", want: "1.7.10"},
+		{name: "test", texto: "test", want: ""},
+		{name: "archivo", texto: "1.21.7.json", want: "1.21.7"},
+		{name: "archivo 2", texto: "1.21.json", want: "1.21"},
+		{name: "version test", texto: "Paper 1.21.10", want: "1.21.10"},
+		{name: "version test 2", texto: "Paper 1.21", want: "1.21"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := versiones.Extraer_version(tt.texto)
+
+			if got != tt.want {
+				t.Errorf("Extraer_version() = %v, want %v", got, tt.want)
 			}
 		})
 	}

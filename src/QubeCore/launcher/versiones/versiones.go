@@ -184,3 +184,10 @@ func Es_version_antigua(version string) bool {
 	return num <= 7
 
 }
+
+func Extraer_version(texto string) string {
+
+	reg := regexp.MustCompile(`(\d+\.\d+(?:\.\d+)?)`)
+	return reg.FindString(texto)
+
+}

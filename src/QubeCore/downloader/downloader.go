@@ -21,7 +21,7 @@ func Descargar_version(versionURL, usuario, java_ram string, GORUNTINAS int) []s
 
 	var tasks []data.Task
 	var version_json = path.Base(versionURL)
-	var carpeta_version = archivos.Extraer_version(version_json)
+	var carpeta_version = versiones.Extraer_version(version_json)
 	var ruta_target_versiones = filepath.Join(versiones.Ruta_versiones, carpeta_version)
 	var ruta_target_assets = filepath.Join(versiones.Ruta_minecraft, "assets", "indexes")
 
