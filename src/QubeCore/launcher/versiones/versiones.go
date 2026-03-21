@@ -5,11 +5,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"regexp"
+	"strconv"
 	"strings"
 
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/pterm/pterm"
 )
 
 var (
@@ -82,6 +86,8 @@ func Listar_Versiones(bytes []byte) []Versiones {
 
 	}
 
+	var espacios = strings.Repeat(" ", 4)
+
 	for _, mapa := range v.Versions {
 
 		version_ := mapa["id"]
@@ -90,9 +96,13 @@ func Listar_Versiones(bytes []byte) []Versiones {
 
 		if tipo == "release" {
 
-			if Existe_version(version_) {
+			if Es_version_antigua(version_) {
 
-				version_ = version_ + strings.Repeat(" ", 4) + "[instalada]"
+				version_ = version_ + espacios + pterm.LightYellow("[posibles problemas al lanzar]")
+
+			} else if Existe_version(version_) {
+
+				version_ = version_ + espacios + pterm.Magenta("[instalada]")
 
 			}
 
@@ -129,4 +139,43 @@ func Menu_Versiones(versiones []Versiones) string {
 		versiones_str = append(versiones_str, version.Nombre)
 	}
 	return consola.Menu(versiones_str)
+}
+
+func Num_version(version string) string {
+
+	/*
+		ejemplos:
+		1.7 -> 7
+		1.20.1 -> 20
+	*/
+	var valor string
+	reg := regexp.MustCompile(`1\.(\d+)(?:.\d+)?`)
+
+	matches := reg.FindStringSubmatch(version)
+
+	if len(matches) == 2 {
+		valor = matches[1]
+		return valor
+	}
+
+	return valor
+}
+
+func Es_version_antigua(version string) bool {
+	/* estas versiones no las cubre el laucher por falta de compatibilidad,
+	las voy a dar por deprecadas (versiones menores a la 1.8 inclusive)
+	(almenos por ahora)
+	*/
+
+	if version == "1.8" {
+		return true
+	}
+
+	num, numerr := strconv.Atoi(Num_version(version))
+	if numerr != nil {
+		return false
+	}
+
+	return num <= 7
+
 }
