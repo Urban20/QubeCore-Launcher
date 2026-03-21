@@ -23,13 +23,9 @@ func FetchJSON(url, ruta_target string, target interface{}) error {
 	json_arch := path.Base(url)
 	archivo := filepath.Join(ruta_target, json_arch)
 
-	fmt.Println("version ruta: ", ruta_target)
-
-	fmt.Printf("archivo: %s", archivo)
-
 	if versiones.Existe_archivo(archivo) {
 		// si ya existe leer de ahi
-		fmt.Println("se encontro la ruta al json")
+
 		arch, err := os.Open(archivo)
 
 		if err != nil {
@@ -39,7 +35,6 @@ func FetchJSON(url, ruta_target string, target interface{}) error {
 		return json.NewDecoder(arch).Decode(target)
 	}
 
-	fmt.Println("no se encontro la ruta al json de version")
 	resp, err := http.Get(url) // sino descarga de ahi y la prox vez mc lo cachea automaticamnete (se supone)
 	// TODO: verificar bien en algun momento
 	if err != nil {

@@ -51,7 +51,6 @@ func Maneja_Natives(tasks []data.Task, vj data.VersionJSON, OS string) []data.Ta
 	// carga los natives y los agrega a la lista de tareas
 
 	carpeta_natives := filepath.Join(versiones.Ruta_versiones, vj.ID, "natives")
-	fmt.Println("carpeta de natives: ", carpeta_natives)
 
 	if err := os.MkdirAll(carpeta_natives, 0755); err != nil {
 		fmt.Println("error al crear natives/: ", err)
