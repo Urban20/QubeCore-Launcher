@@ -3,3 +3,4 @@ logs/
 *.bat
 versiones.json
 *.exe
+config.ini
