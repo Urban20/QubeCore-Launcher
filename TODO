@@ -5,9 +5,11 @@
 
 2)agregar una opcion para forzar la descarga del json (CHECK)
 
-3)hacer una funcion que verifique si hay internet antes de descargar
+3)hacer una funcion que verifique si hay internet antes de descargar (opte por no hacerla)
 
-4) hacer una lista para poder ver las snapshots tambien
+4) hacer una lista para poder ver las snapshots tambien (CHECK)
+
+5) crear una barra de progreso al descargar cosas
 
 
 A LARGO PLAZO!!

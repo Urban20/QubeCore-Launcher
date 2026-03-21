@@ -72,7 +72,7 @@ func Limpiar_consola(pantalla *pterm.AreaPrinter) { // esto no funciona bien TOD
 }
 
 func Imprimir_logo() {
-	banner := fmt.Sprintf("Launcher CLI para Minecraft Java\nVersion: %s\nAutor: %s", VERSION, AUTOR)
+	banner := fmt.Sprintf("Launcher CLI para Minecraft Java\nVersion: %s\nEscrito por: %s", VERSION, AUTOR)
 	//Limpiar_consola()
 	logo, _ := pterm.DefaultBigText.WithLetters(putils.LettersFromString(LAUNCHER)).Srender()
 	pterm.DefaultCenter.Println(logo)
