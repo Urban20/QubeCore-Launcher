@@ -34,7 +34,7 @@ func Formatear_opciones_menu(opciones ...string) []string {
 
 }
 
-func ejecutar_comando(ruta_java string, comando []string) (*os.File, *os.File, error) {
+func ejecutar_comando(ruta_java string, comando []string) error {
 	cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
 	out, _ := os.Create(Archivo_CMD)
 	stederr, _ := os.Create(Archivo_Stederr_CMD)
@@ -43,8 +43,9 @@ func ejecutar_comando(ruta_java string, comando []string) (*os.File, *os.File, e
 
 	consola.Imprimir_cartel("iniciando instancia...")
 	cmderr := cmd.Run()
-
-	return out, stederr, cmderr
+	out.Close()
+	stederr.Close()
+	return cmderr
 
 }
 
@@ -58,9 +59,7 @@ func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versione
 	} else if v.Nombre == eleccion {
 
 		comando = downloader.Descargar_version(v.Url, configuracion.Config.Usuario, configuracion.Config.Ram, configuracion.Config.Hilos)
-		out, stderr, cmderr := ejecutar_comando(ruta_java, comando)
-		defer out.Close()
-		defer stderr.Close()
+		cmderr := ejecutar_comando(ruta_java, comando)
 
 		if cmderr != nil {
 

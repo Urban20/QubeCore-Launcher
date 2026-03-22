@@ -64,6 +64,14 @@ func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 		"-Dfile.encoding=UTF-8",
 	}
 
+	optimizacion := []string{
+		"-XX:+UseG1GC",
+		"-XX:+UnlockExperimentalVMOptions",
+		"-XX:G1NewSizePercent=20",
+		"-XX:G1ReservePercent=20",
+		"-XX:MaxGCPauseMillis=50",
+		"-XX:G1HeapRegionSize=32M"}
+
 	bat := []string{"-cp", cp, vj.MainClass, // TODO: en algun momento voy a tener que cambiar esto
 		// el hardcodeo es fragil
 		"--username", usuario,
@@ -76,6 +84,7 @@ func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 		"--userType", "legacy",
 		"--userProperties", "{}"}
 
+	jvm = append(jvm, optimizacion...)
 	jvm = append(jvm, bat...)
 
 	return jvm
