@@ -1,5 +1,7 @@
 # QubeCore Launcher
 
+[ENGLISH](https://github.com/Urban20/QubeCore-Launcher/blob/main/docs/README.en.md) 
+
 Launcher minimalista y portable de línea de comandos para Minecraft Java Edition. Escrito en Go.
 
 ## Requisitos
