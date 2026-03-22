@@ -9,10 +9,14 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"time"
 )
 
 // este modulo contiene las funciones de las opciones que se llaman a main
+
+var Archivo_CMD = filepath.Join(versiones.Exe, "log-cmd.log") // desvio el comando del stdout
+var Archivo_Stederr_CMD = filepath.Join(versiones.Exe, "log-cmd-error.log")
 
 // funciones  auxiliares
 
@@ -30,6 +34,20 @@ func Formatear_opciones_menu(opciones ...string) []string {
 
 }
 
+func ejecutar_comando(ruta_java string, comando []string) (*os.File, *os.File, error) {
+	cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
+	out, _ := os.Create(Archivo_CMD)
+	stederr, _ := os.Create(Archivo_Stederr_CMD)
+	cmd.Stdout = out
+	cmd.Stderr = stederr
+
+	consola.Imprimir_cartel("iniciando instancia...")
+	cmderr := cmd.Run()
+
+	return out, stederr, cmderr
+
+}
+
 func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versiones.Versiones) {
 	var comando []string
 
@@ -40,14 +58,12 @@ func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versione
 	} else if v.Nombre == eleccion {
 
 		comando = downloader.Descargar_version(v.Url, configuracion.Config.Usuario, configuracion.Config.Ram, configuracion.Config.Hilos)
-		cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
-		nul, _ := os.Open(os.DevNull)
-		cmd.Stdout = nul
-		defer nul.Close()
-		consola.Imprimir_cartel("iniciando instancia...")
-		cmderr := cmd.Run()
+		out, stderr, cmderr := ejecutar_comando(ruta_java, comando)
+		defer out.Close()
+		defer stderr.Close()
 
 		if cmderr != nil {
+
 			consola.Imprimir_error("hubo un problema al lanzar la version: ", cmderr.Error())
 			fmt.Print("\n\n")
 			consola.Imprimir_Alerta("el problema puede ser causado por una version de java incompatible")

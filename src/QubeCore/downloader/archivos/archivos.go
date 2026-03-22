@@ -73,7 +73,8 @@ func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 		"--assetIndex", vj.AssetIndex.ID,
 		"--uuid", "00000000-0000-0000-0000-000000000000",
 		"--accessToken", "0",
-		"--userType", "legacy"}
+		"--userType", "legacy",
+		"--userProperties", "{}"}
 
 	jvm = append(jvm, bat...)
 

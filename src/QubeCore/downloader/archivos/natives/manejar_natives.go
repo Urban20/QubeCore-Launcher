@@ -46,7 +46,7 @@ func gestionar_natives(lib data.Library, SO string) (data.Artifact, error) {
 
 }
 
-func Maneja_Natives(tasks []data.Task, vj data.VersionJSON, OS string) []data.Task {
+func Maneja_Natives(tasks []data.Task, vj data.VersionJSON, SO string) []data.Task {
 
 	// carga los natives y los agrega a la lista de tareas
 
@@ -58,7 +58,7 @@ func Maneja_Natives(tasks []data.Task, vj data.VersionJSON, OS string) []data.Ta
 
 	for _, lib := range vj.Libraries {
 
-		native, naterr := gestionar_natives(lib, OS)
+		native, naterr := gestionar_natives(lib, SO)
 
 		if naterr != nil {
 			continue
@@ -74,14 +74,14 @@ func Maneja_Natives(tasks []data.Task, vj data.VersionJSON, OS string) []data.Ta
 	return tasks
 }
 
-func Extraer_Natives(vj data.VersionJSON, OS string) error { // esta funcion extrae las natives, operacion necesaria para
+func Extraer_Natives(vj data.VersionJSON, SO string) error { // esta funcion extrae las natives, operacion necesaria para
 	// versiones antiguas de Minecaft
 	nativesDir := filepath.Join(versiones.Ruta_minecraft, "versions", vj.ID, "natives")
 	os.MkdirAll(nativesDir, 0755)
 
 	for _, lib := range vj.Libraries {
 
-		native, naterr := gestionar_natives(lib, OS)
+		native, naterr := gestionar_natives(lib, SO)
 
 		if naterr != nil {
 			continue

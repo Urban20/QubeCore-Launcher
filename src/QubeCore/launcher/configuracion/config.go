@@ -4,6 +4,7 @@ import (
 	"QbCore/consola"
 	"QbCore/versiones"
 	"fmt"
+	"path/filepath"
 	"strconv"
 
 	"os"
@@ -80,7 +81,7 @@ func leer_config() Configuracion_ {
 	Hilos_str, _ := cfg.Get(seccion_concurrencia, opcion_concurrencia)
 
 	conf.Usuario = Nick
-	conf.Ruta_Java = ruta_Java
+	conf.Ruta_Java = filepath.Join(ruta_Java, "java")
 	conf.Ram = Ram
 	Hilos, errhilos := strconv.Atoi(Hilos_str)
 

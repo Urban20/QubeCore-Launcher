@@ -4,3 +4,4 @@ logs/
 versiones.json
 *.exe
 config.ini
+*.log
