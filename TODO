@@ -1,15 +1,14 @@
 
-1)mejorar configuracion
+1) mejorar configuracion
 - agregar parametros para maneja la ram de la jvm (CHECK)
 
+2) agregar una opcion para forzar la descarga del json (CHECK)
 
-2)agregar una opcion para forzar la descarga del json (CHECK)
-
-3)hacer una funcion que verifique si hay internet antes de descargar (opte por no hacerla)
+3) hacer una funcion que verifique si hay internet antes de descargar (opte por no hacerla)
 
 4) hacer una lista para poder ver las snapshots tambien (CHECK)
 
-5) crear una barra de progreso al descargar cosas
+5) crear una barra de progreso al descargar cosas (CHECK)
 
 
 A LARGO PLAZO!!
