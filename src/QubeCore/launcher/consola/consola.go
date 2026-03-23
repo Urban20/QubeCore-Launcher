@@ -19,27 +19,19 @@ var Opcion2 = "ver configuracion"
 var Opcion3 = "actualizar lista de versiones"
 var Opcion4 = "salir"
 
+var Color_principal = pterm.NewRGB(131, 184, 39)
 var Pantalla = Iniciar_Pantalla()
 
 func Menu(opciones []string) string {
 
 	seleccion := pterm.DefaultInteractiveSelect
-	seleccion.TextStyle = &pterm.Style{pterm.BgLightCyan, pterm.FgBlack}
+	seleccion.TextStyle = &pterm.Style{pterm.BgGreen, pterm.FgBlack}
 	seleccion.DefaultText = "SELECCIONAR opcion"
 	seleccion.Selector = "➡ "
 	seleccion.SelectorStyle = &pterm.Style{pterm.FgWhite}
 	seleccion.FilterInputPlaceholder = "[TIPEAR opcion]"
 	op, _ := seleccion.WithOptions(opciones).Show()
 	return op
-
-}
-
-func Imprimir_cartel_2(texto, nombre_cartel string) {
-	// lo mismo que imprimir cartel pero adaptado a otro cartel distinto de info
-
-	cartel := pterm.Info
-	cartel.Prefix.Text = nombre_cartel
-	cartel.Println(texto)
 
 }
 
@@ -51,6 +43,8 @@ func Imprimir_cartel(texto ...string) {
 	}
 
 	cartel := pterm.Info
+	cartel.Prefix.Style = &pterm.Style{pterm.BgGreen}
+	cartel.MessageStyle = &pterm.Style{pterm.FgGreen}
 	cartel.Println(t)
 }
 
@@ -64,7 +58,7 @@ func Iniciar_Pantalla() *pterm.AreaPrinter {
 	return p
 }
 
-func Limpiar_consola(pantalla *pterm.AreaPrinter) { // esto no funciona bien TODO
+func Limpiar_consola(pantalla *pterm.AreaPrinter) {
 	fmt.Println(strings.Repeat("\n", 50))
 	fmt.Print("\033[H")
 	pantalla.Clear()
@@ -74,9 +68,10 @@ func Limpiar_consola(pantalla *pterm.AreaPrinter) { // esto no funciona bien TOD
 func Imprimir_logo() {
 	banner := fmt.Sprintf("Launcher CLI para Minecraft Java\nVersion: %s\nEscrito por: %s", VERSION, AUTOR)
 	//Limpiar_consola()
-	logo, _ := pterm.DefaultBigText.WithLetters(putils.LettersFromString(LAUNCHER)).Srender()
+	logo, _ := pterm.DefaultBigText.WithLetters(putils.LettersFromStringWithRGB(LAUNCHER, Color_principal)).Srender()
 	pterm.DefaultCenter.Println(logo)
-	pterm.DefaultCenter.WithCenterEachLineSeparately().Println(banner)
+
+	pterm.DefaultCenter.WithCenterEachLineSeparately().Println(pterm.Gray(banner))
 }
 
 func Cartel_Usuario(usuario string) {
@@ -120,7 +115,7 @@ func Imprimir_Alerta(alerta ...string) {
 
 func Mostrar_Opciones(usuario, ruta_java, java_ram string, hilos int) {
 	opciones := fmt.Sprintf("Nombre de usuario: %s\nRuta de java: %s (en la env)\nHilos en paralelo: %d\nRam de jvm: %s",
-		pterm.LightMagenta(usuario), ruta_java, hilos, java_ram)
+		Color_principal.Sprint(usuario), ruta_java, hilos, java_ram)
 
 	centro := pterm.DefaultCenter
 	centro.Println(opciones)
@@ -129,11 +124,23 @@ func Mostrar_Opciones(usuario, ruta_java, java_ram string, hilos int) {
 // resalta texto con un color celeste y letras negras
 func Resaltar_texto(texto string) string {
 
-	return pterm.FgLightCyan.Sprint(texto)
+	return Color_principal.Sprint(texto)
 
 }
 
 func Resaltar_texto_amarillo(texto string) string {
 
 	return pterm.FgLightYellow.Sprint(texto)
+}
+
+func Instrucciones() {
+
+	texto := "Teclas ←↑→↓ o scroll, ENTER para confirmar"
+
+	instrucciones := pterm.Info
+	instrucciones.Prefix.Text = "INSTRUCCIONES"
+	instrucciones.Prefix.Style = &pterm.Style{pterm.BgLightGreen, pterm.FgBlack}
+	instrucciones.MessageStyle = &pterm.Style{pterm.FgDarkGray}
+	instrucciones.Println(texto + "\n\n")
+
 }

@@ -134,7 +134,8 @@ func Opcion_actualizarVersiones(ejecucion *bool) {
 }
 
 func Opcion_salir(ejecucion *bool) {
-	fmt.Print("\n\nsaliendo del launcher ...\n")
+	fmt.Print("\n\n")
+	consola.Imprimir_cartel("saliendo del launcher ...")
 	time.Sleep(time.Second * 3)
 	*ejecucion = false
 }
