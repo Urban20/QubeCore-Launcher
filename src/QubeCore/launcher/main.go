@@ -29,7 +29,8 @@ func cargar_version() []byte {
 func main() {
 
 	if err := consola.Iniciar_ANSI(); err != nil {
-		consola.Imprimir_error("esta terminal no es compatible con el launcher: ", err.Error())
+		err := fmt.Errorf("esta terminal no es compatible con el launcher: %w", err)
+		fmt.Println(err.Error())
 		fmt.Scanln()
 		os.Exit(1)
 	}

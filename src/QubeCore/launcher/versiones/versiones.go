@@ -15,7 +15,8 @@ import (
 )
 
 var (
-	Exe, _         = os.Getwd()
+	dir_exe, _     = os.Executable()
+	Exe            = filepath.Dir(dir_exe)
 	Ruta_minecraft = filepath.Clean(filepath.Join(Exe, ".minecraft"))
 	Ruta_versiones = filepath.Join(Ruta_minecraft, "versions")
 )
