@@ -7,6 +7,7 @@ import (
 	"QbCore/versiones"
 	"downloader/archivos"
 	"fmt"
+	"os"
 )
 
 func cargar_version() []byte {
@@ -27,15 +28,24 @@ func cargar_version() []byte {
 
 func main() {
 
+	if err := consola.Iniciar_ANSI(); err != nil {
+		consola.Imprimir_error("esta terminal no es compatible con el launcher: ", err.Error())
+		fmt.Scanln()
+		os.Exit(1)
+	}
+	fmt.Print("\033[?1049h")
+
 	var ejecucion bool = true
 
 	bytes := cargar_version()
 
 	menu.Setear_opciones()
 
+	Pantalla := consola.Iniciar_Pantalla()
+
 	for ejecucion {
-		fmt.Print("\033[?1049h")
-		consola.Limpiar_consola(consola.Pantalla)
+
+		consola.Limpiar_consola(Pantalla)
 		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s, entrar a %s para modificarlo", configuracion.Config.Usuario, configuracion.CONFIG))
 		consola.Imprimir_logo()
 
@@ -49,7 +59,7 @@ func main() {
 			menu.Lanzar_versiones(bytes)
 
 		case consola.Opcion2:
-			menu.Opcion_ver_config()
+			menu.Opcion_ver_config(Pantalla)
 
 		case consola.Opcion3:
 
@@ -63,6 +73,6 @@ func main() {
 
 		}
 
-		consola.Limpiar_consola(consola.Pantalla)
+		consola.Limpiar_consola(Pantalla)
 	}
 }

@@ -11,6 +11,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"time"
+
+	"github.com/pterm/pterm"
 )
 
 // este modulo contiene las funciones de las opciones que se llaman a main
@@ -111,9 +113,9 @@ func Setear_opciones() {
 }
 
 // opciones
-func Opcion_ver_config() {
+func Opcion_ver_config(pantalla *pterm.AreaPrinter) {
 
-	consola.Limpiar_consola(consola.Pantalla)
+	consola.Limpiar_consola(pantalla)
 	consola.Mostrar_Opciones(
 		configuracion.Config.Usuario,
 		configuracion.Config.Ruta_Java,
