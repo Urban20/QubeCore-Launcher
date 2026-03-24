@@ -15,8 +15,8 @@ import (
 )
 
 var (
-	dir_exe, _     = os.Executable()
-	Exe            = filepath.Dir(dir_exe)
+	Exe_archivo, _ = os.Executable()
+	Exe            = filepath.Dir(Exe_archivo) //ruta del exe
 	Ruta_minecraft = filepath.Clean(filepath.Join(Exe, ".minecraft"))
 	Ruta_versiones = filepath.Join(Ruta_minecraft, "versions")
 )

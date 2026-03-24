@@ -28,6 +28,8 @@ func cargar_version() []byte {
 
 func main() {
 
+	// la configuracion se inicia al iniciar el programa en su respectivo modulo
+
 	if err := consola.Iniciar_ANSI(); err != nil {
 		err := fmt.Errorf("esta terminal no es compatible con el launcher: %w", err)
 		fmt.Println(err.Error())
@@ -43,11 +45,11 @@ func main() {
 	menu.Setear_opciones()
 
 	Pantalla := consola.Iniciar_Pantalla()
+	consola.Limpiar_consola(Pantalla)
 
 	for ejecucion {
 
-		consola.Limpiar_consola(Pantalla)
-		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s, entrar a %s para modificarlo", configuracion.Config.Usuario, configuracion.CONFIG))
+		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s\nentrar a %s para modificarlo", consola.Color_principal.Sprint(configuracion.Config.Usuario), consola.Color_principal.Sprint(configuracion.Ruta_config)))
 		consola.Imprimir_logo()
 
 		consola.Instrucciones()
