@@ -145,3 +145,14 @@ func Instrucciones() {
 	instrucciones.Println(texto + "\n\n")
 
 }
+
+func Crear_barra(total int, titulo string) *pterm.ProgressbarPrinter {
+
+	barra := pterm.DefaultProgressbar
+	barra.BarStyle = &pterm.Style{pterm.BgWhite}
+	barra.TitleStyle = &pterm.Style{pterm.FgBlack, pterm.BgLightWhite}
+	p, _ := barra.WithTotal(total).WithTitle(titulo).Start()
+
+	return p
+
+}
