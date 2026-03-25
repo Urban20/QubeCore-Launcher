@@ -1,6 +1,7 @@
 package archivos
 
 import (
+	"QbCore/consola"
 	"QbCore/versiones"
 	so "downloader/SO"
 	"downloader/data"
@@ -94,8 +95,8 @@ func Maneja_Assets(tasks []data.Task, vj data.VersionJSON, assetIndexPath, ruta_
 
 	var ai data.AssetIndex // assetindex
 	if err := FetchJSON(vj.AssetIndex.URL, ruta_target, &ai); err != nil {
-		fmt.Println("Error lanzando el indice de assets:", err)
-		fmt.Println("CUIDADO!! esto puede hacer que el juego crashee")
+		consola.Imprimir_error(fmt.Errorf("Error lanzando el indice de assets: %w", err).Error())
+		consola.Imprimir_Alerta("CUIDADO!! esto puede hacer que el juego crashee")
 
 	}
 

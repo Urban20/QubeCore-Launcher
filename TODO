@@ -12,7 +12,9 @@
 
 6) agregar opcion para modificar .ini desde el launcher 
 
-7) deteccion automatica de java (ver como encarar esto)
+7) deteccion automatica de java (ver como encarar esto) (CHECK)
+
+8) cambiar el sistema de actualizacion de las versiones para no tener que reinciiar y leer directamente
 
 A LARGO PLAZO!!
 quiza sea mejor cambiar como se lanza el juego con las flags como esta ahora
