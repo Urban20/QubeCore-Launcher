@@ -4,6 +4,7 @@ import (
 	"QbCore/consola"
 	"QbCore/versiones"
 	"fmt"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 
@@ -13,21 +14,28 @@ import (
 	"github.com/bigkevmcd/go-configparser"
 )
 
+// este modulo maneja la logica de creacion y lectura de .ini (archivo de configuracion del programa)
+
 var Config = Crear_ini()
 
 // valores por defecto
-const CONFIG = "./config.ini"
+const NOMBRE_CONFIG = "config.ini"
 
+var Ruta_config = filepath.Join(versiones.Exe, NOMBRE_CONFIG)
+
+// usuario
 var seccion_usuario = "Usuario"
 var opcion_usuario = "Nickname"
 var Usuario_default = "Steve"
 
+// java
 var seccion_Java = "Java"
 var opcion_ruta_java = "Ruta"
 var opcion_ram_asignada = "Ram_asignada"
-var Ruta_dafault = "java"
+var ruta_java_ejecutable, _ = exec.LookPath("java")
 var Arg_default = "2G"
 
+// descarga y concurrencia
 var seccion_concurrencia = "Concurrencia"
 var opcion_concurrencia = "Hilos"
 var Hilos_default = "50"
@@ -41,7 +49,7 @@ type Configuracion_ struct { // los valores de la config
 
 func Crear_ini() Configuracion_ {
 
-	if versiones.Existe_archivo(CONFIG) {
+	if versiones.Existe_archivo(Ruta_config) {
 		return leer_config() // si existe la lee
 	}
 
@@ -50,20 +58,20 @@ func Crear_ini() Configuracion_ {
 	ini.Set(seccion_usuario, opcion_usuario, Usuario_default)
 
 	ini.AddSection(seccion_Java)
-	ini.Set(seccion_Java, opcion_ruta_java, Ruta_dafault)
+	ini.Set(seccion_Java, opcion_ruta_java, ruta_java_ejecutable)
 	ini.Set(seccion_Java, opcion_ram_asignada, Arg_default)
 
 	ini.AddSection(seccion_concurrencia)
 	ini.Set(seccion_concurrencia, opcion_concurrencia, Hilos_default)
 
-	ini.SaveWithDelimiter(CONFIG, "=")
+	ini.SaveWithDelimiter(Ruta_config, "=")
 
 	return leer_config()
 
 }
 
 func leer_config() Configuracion_ {
-	cfg, errcfg := configparser.NewConfigParserFromFile(CONFIG)
+	cfg, errcfg := configparser.NewConfigParserFromFile(Ruta_config)
 
 	if errcfg != nil {
 		fmt.Println("error en configuracion: ", errcfg)
@@ -73,15 +81,19 @@ func leer_config() Configuracion_ {
 
 	conf := Configuracion_{}
 
+	// obtener usuario
 	Nick, _ := cfg.Get(seccion_usuario, opcion_usuario)
 
+	// obtener java
 	ruta_Java, _ := cfg.Get(seccion_Java, opcion_ruta_java)
 	Ram, _ := cfg.Get(seccion_Java, opcion_ram_asignada)
 
+	//obtener concurrencia
 	Hilos_str, _ := cfg.Get(seccion_concurrencia, opcion_concurrencia)
 
+	//seteo de configuracion en la struct
 	conf.Usuario = Nick
-	conf.Ruta_Java = filepath.Join(ruta_Java, "java")
+	conf.Ruta_Java = ruta_Java
 	conf.Ram = Ram
 	Hilos, errhilos := strconv.Atoi(Hilos_str)
 
