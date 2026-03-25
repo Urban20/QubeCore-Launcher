@@ -74,8 +74,10 @@ func Maneja_Natives(tasks []data.Task, vj data.VersionJSON, SO string) []data.Ta
 	return tasks
 }
 
-func Extraer_Natives(vj data.VersionJSON, SO string) error { // esta funcion extrae las natives, operacion necesaria para
-	// versiones antiguas de Minecaft
+// esta funcion extrae las natives, operacion necesaria para
+// versiones antiguas de Minecaft
+func Extraer_Natives(vj data.VersionJSON, SO string) error {
+
 	nativesDir := filepath.Join(versiones.Ruta_minecraft, "versions", vj.ID, "natives")
 	os.MkdirAll(nativesDir, 0755)
 
@@ -87,18 +89,18 @@ func Extraer_Natives(vj data.VersionJSON, SO string) error { // esta funcion ext
 			continue
 		}
 
-		jarPath := filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(native.Path))
+		jarPath := filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(native.Path)) //btener la ruta de natives, from slash reemplaza / por el salsh que use el SO
 		r, err := zip.OpenReader(jarPath)
 		if err != nil {
 			return fmt.Errorf("abriendo natives jar %s: %w", jarPath, err)
 		}
 
-		for _, f := range r.File {
+		for _, f := range r.File { // iteramos por cada archivo dentro del jarpath
 			if strings.HasPrefix(f.Name, "META-INF") || f.FileInfo().IsDir() {
-				continue
+				continue // pregunta si es un directorio o contiene el prefijo, si es asi continua con el siguiente
 			}
-			dest := filepath.Join(nativesDir, filepath.Base(f.Name))
-			rc, _ := f.Open() //copia los distintos archivos
+			dest := filepath.Join(nativesDir, filepath.Base(f.Name)) // crea un directorio basado en ese archivo
+			rc, _ := f.Open()                                        //copia los distintos archivos
 			out, _ := os.Create(dest)
 			_, err := io.Copy(out, rc)
 			if err != nil {

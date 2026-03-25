@@ -4,6 +4,8 @@ import (
 	"QbCore/versiones"
 	"crypto/sha1"
 	"encoding/hex"
+	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -49,6 +51,12 @@ func DownloadFile(url, destPath, expectedSHA1 string) error {
 		return err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+
+		return errors.New(fmt.Sprintf("la url no devolvio el codigo de estado esperado (200), codigo de estado retornado: %d", resp.StatusCode))
+
+	}
 
 	f, err := os.Create(destPath)
 	if err != nil {
