@@ -34,26 +34,26 @@ type Versiones struct { // esto contiene info de nombre (1.21.10 ejemplo , url u
 }
 
 // obtiene la url y devulve nil o bytes
-func Obtener_data(url string) []byte {
+func Obtener_data(url string) ([]byte, error) {
 	// json de versiones manifiest.json
 	resp, resperr := http.Get(url)
 	if resperr != nil {
 
-		return nil
+		return []byte{}, resperr
 	}
 
 	if resp.StatusCode != http.StatusOK {
 
-		fmt.Printf("no se pudo extraer la informacion de versiones, codigo de estado: %d", resp.StatusCode) // cambiar con un mensaje de error mal lindo
-		return nil
+		return []byte{}, fmt.Errorf("no se pudo extraer la informacion de versiones, codigo de estado: %d", resp.StatusCode) // cambiar con un mensaje de error mal lindo
+
 	}
 
 	bytes, readerr := io.ReadAll(resp.Body)
 	if readerr != nil {
-		return nil
+		return []byte{}, readerr
 	}
 
-	return bytes
+	return bytes, nil
 
 }
 
@@ -130,7 +130,7 @@ func Existe_archivo(archivo string) bool {
 }
 
 // retorna true si la carpeta de la version existe
-func Existe_version(version string) bool { // TODO: hacer un test de casos para esto
+func Existe_version(version string) bool {
 
 	v := filepath.Join(Ruta_versiones, version)
 

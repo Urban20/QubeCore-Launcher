@@ -6,24 +6,45 @@ import (
 	"QbCore/menu"
 	"QbCore/versiones"
 	"downloader/archivos"
+	"errors"
 	"fmt"
 	"os"
 )
 
-func cargar_version() []byte {
+// invoca Descargar_manifiest manejando sus errores
+func manejar_error_manifiest() []byte {
+
+	bytesmanifiest, manifiesterr := archivos.Descargar_Manifiest()
+
+	if manifiesterr != nil {
+		consola.Imprimir_error("hubo un problema al descargar el manifiest: ", manifiesterr.Error())
+		fmt.Scanln()
+		return []byte{}
+	}
+
+	return bytesmanifiest
+
+}
+
+func cargar_version() ([]byte, error) {
 	var bytes []byte
 	if !versiones.Existe_archivo(versiones.ARCHIVO_INSTANCIAS) {
 		// si el json de versiones no existe obtiene el json de internet
 		consola.Imprimir_cartel("json no encontrado, descargando\n")
 
-		bytes = archivos.Descargar_Manifiest()
+		bytes = manejar_error_manifiest()
 
 	} else {
 		consola.Imprimir_cartel("se encontro el JSON\n")
 		bytes = versiones.Leer_json(versiones.ARCHIVO_INSTANCIAS)
 
 	}
-	return bytes
+
+	if len(bytes) == 0 {
+		return []byte{}, errors.New("se devolvio un numero de bytes vacios")
+	}
+
+	return bytes, nil
 }
 
 func main() {
@@ -40,7 +61,14 @@ func main() {
 
 	var ejecucion bool = true
 
-	bytes := cargar_version()
+	bytes, versionerr := cargar_version()
+
+	if versionerr != nil {
+		consola.Imprimir_error("error al cargar las versiones: ", versionerr.Error())
+		fmt.Scanln()
+		os.Exit(1)
+
+	}
 
 	menu.Setear_opciones()
 
@@ -66,7 +94,7 @@ func main() {
 
 		case consola.Opcion3:
 
-			menu.Opcion_actualizarVersiones(&ejecucion)
+			bytes = manejar_error_manifiest()
 
 		case consola.Opcion4:
 			menu.Opcion_salir(&ejecucion)

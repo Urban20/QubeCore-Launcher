@@ -5,7 +5,6 @@ import (
 	"QbCore/consola"
 	"QbCore/versiones"
 	"downloader"
-	"downloader/archivos"
 	"fmt"
 	"os"
 	"os/exec"
@@ -127,13 +126,12 @@ func Opcion_ver_config(pantalla *pterm.AreaPrinter) {
 	fmt.Scanln()
 }
 
+/*
 func Opcion_actualizarVersiones(ejecucion *bool) {
 
-	archivos.Descargar_Manifiest()
-	consola.Imprimir_cartel("se debe reiniciar el launcher ...\ncerrando programa")
-	time.Sleep(3 * time.Second)
-	*ejecucion = false
-}
+	bytes_manifiest := archivos.Descargar_Manifiest()
+
+}}*/
 
 func Opcion_salir(ejecucion *bool) {
 	fmt.Print("\n\n")
@@ -144,6 +142,6 @@ func Opcion_salir(ejecucion *bool) {
 
 func No_implementado() {
 	fmt.Print("\n\n")
-	consola.Imprimir_Alerta("no implementado todavia") // TODO: hacer el display de config
+	consola.Imprimir_Alerta("no implementado todavia")
 	fmt.Scanln()
 }

@@ -6,6 +6,7 @@ import (
 	so "downloader/SO"
 	"downloader/data"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"net/http"
@@ -19,7 +20,6 @@ import (
 func FetchJSON(url, ruta_target string, target interface{}) error {
 
 	// hace un get a la url y vuelca el resultado en target
-	// TODO: hay que cachear la info en caso de que ya este
 
 	json_arch := path.Base(url)
 	archivo := filepath.Join(ruta_target, json_arch)
@@ -187,18 +187,23 @@ func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = cla
 	return cp
 }
 
-func Descargar_Manifiest() []byte {
+func Descargar_Manifiest() ([]byte, error) {
 
 	// descarga, guarda y retorna bytes
 
-	bytes := versiones.Obtener_data(versiones.VERSIONES_JSON)
+	bytes, dataerr := versiones.Obtener_data(versiones.VERSIONES_JSON)
+
+	if dataerr != nil {
+
+		return []byte{}, dataerr
+	}
 
 	if bytes == nil || len(bytes) == 0 {
-		os.Exit(1)
+		return []byte{}, errors.New("se retorno un numero de bytes vacio")
 	}
 
 	versiones.Guardar_versiones(bytes)
 
-	return bytes
+	return bytes, nil
 
 }
