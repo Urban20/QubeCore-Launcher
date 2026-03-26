@@ -17,4 +17,19 @@
 8) cambiar el sistema de actualizacion de las versiones para no tener que reinciiar y leer directamente
 
 A LARGO PLAZO!!
-quiza sea mejor cambiar como se lanza el juego con las flags como esta ahora
+quiza sea mejor cambiar como se lanzar el juego con las flags como esta ahora
+
+
+POSIBLES FEATURES NUEVAS A IMPLEMENTAR: 
+
+9) deteccion de version de java requerida por la version de minecraft
+- el version.json de mojang incluye el campo "javaVersion" con la version minima requerida
+- agregar ese campo a la struct VersionJSON en data/estructuras.go
+- antes de lanzar, comparar contra la version instalada y advertir si no es compatible
+- ej: 1.17+ requiere java 17, versiones viejas corren con java 8
+
+10) desinstalar versiones desde el launcher
+- listar las versiones instaladas (carpetas dentro de Ruta_versiones)
+- permitir elegir con el menu de pterm y borrar con os.RemoveAll
+- agregar confirmacion antes de borrar
+
