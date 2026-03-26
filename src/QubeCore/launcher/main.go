@@ -87,7 +87,11 @@ func main() {
 		switch eleccion {
 
 		case consola.Opcion1:
-			menu.Lanzar_versiones(bytes)
+
+			if vererr := menu.Lanzar_versiones(bytes); vererr != nil {
+				consola.Imprimir_error("hubo un problema al lanzar las versiones: ", vererr.Error())
+				fmt.Scanln()
+			}
 
 		case consola.Opcion2:
 			menu.Opcion_ver_config(Pantalla)

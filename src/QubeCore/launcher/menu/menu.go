@@ -74,7 +74,7 @@ func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versione
 	}
 }
 
-func Lanzar_versiones(bytes []byte) {
+func Lanzar_versiones(bytes []byte) error {
 
 	var interrumpido = false
 
@@ -82,7 +82,11 @@ func Lanzar_versiones(bytes []byte) {
 
 	tipo := consola.Menu([]string{"release", "snapshot"})
 
-	versiones_ := versiones.Listar_Versiones(bytes, tipo)
+	versiones_, vererr := versiones.Listar_Versiones(bytes, tipo)
+
+	if vererr != nil {
+		return vererr
+	}
 
 	version_elegida = versiones.Menu_Versiones(versiones_)
 
@@ -94,6 +98,8 @@ func Lanzar_versiones(bytes []byte) {
 
 		buscar_instancia(&interrumpido, version_elegida, configuracion.Config.Ruta_Java, v)
 	}
+
+	return nil
 
 }
 
@@ -125,13 +131,6 @@ func Opcion_ver_config(pantalla *pterm.AreaPrinter) {
 	consola.Imprimir_cartel("ENTER para volver")
 	fmt.Scanln()
 }
-
-/*
-func Opcion_actualizarVersiones(ejecucion *bool) {
-
-	bytes_manifiest := archivos.Descargar_Manifiest()
-
-}}*/
 
 func Opcion_salir(ejecucion *bool) {
 	fmt.Print("\n\n")

@@ -3,6 +3,7 @@ package versiones
 import (
 	"QbCore/consola"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"regexp"
@@ -74,7 +75,7 @@ func Guardar_versiones(data []byte) {
 }
 
 // busca las versiones release o snapshot y retorna una lista de estructuras
-func Listar_Versiones(bytes []byte, tipo string) []Versiones {
+func Listar_Versiones(bytes []byte, tipo string) ([]Versiones, error) {
 
 	/*
 		bytes -> bytes del json de versiones
@@ -86,10 +87,8 @@ func Listar_Versiones(bytes []byte, tipo string) []Versiones {
 
 	v := MapaVersiones{}
 
-	if json.Unmarshal(bytes, &v) != nil {
-		fmt.Println("hubo un problema al listar las versiones")
-		os.Exit(1)
-
+	if err := json.Unmarshal(bytes, &v); err != nil {
+		return []Versiones{}, errors.New("hubo un problema al listar las versiones")
 	}
 
 	var espacios = strings.Repeat(" ", 4)
@@ -119,7 +118,7 @@ func Listar_Versiones(bytes []byte, tipo string) []Versiones {
 		}
 
 	}
-	return Versiones_disponibles
+	return Versiones_disponibles, nil
 }
 
 func Existe_archivo(archivo string) bool {
