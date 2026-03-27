@@ -84,11 +84,12 @@ func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 		"--uuid", "00000000-0000-0000-0000-000000000000",
 		"--accessToken", "0",
 		"--userType", "legacy",
-		"--userProperties", "{}"}
+		"--userProperties", "{}",
+		"-DFabricMcEmu=net.minecraft.client.main.Main"}
 
 	jvm = append(jvm, optimizacion...)
 	jvm = append(jvm, bat...)
-
+	fmt.Println(jvm)
 	return jvm
 }
 
@@ -174,7 +175,7 @@ func Cliente_JAR(tasks []data.Task, vj data.VersionJSON, clientPath string) []da
 
 func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = classpath
 
-	cp := clientPath
+	cp := fabric.Loader
 	for _, lib := range vj.Libraries {
 		if !so.LibraryAllowed(lib) {
 			continue
@@ -187,9 +188,9 @@ func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = cla
 	}
 
 	for _, lib := range fabric.Iniciar_sistema_fabric() {
-		cp += string(filepath.Separator) + lib
+		cp += string(filepath.ListSeparator) + lib
 	}
-	return cp
+	return cp + string(filepath.ListSeparator) + clientPath
 }
 
 func Descargar_Manifiest() ([]byte, error) {

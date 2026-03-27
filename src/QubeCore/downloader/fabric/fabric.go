@@ -10,6 +10,14 @@ import (
 	"strings"
 )
 
+var Loader = filepath.Join(
+	versiones.Ruta_minecraft,
+	"libraries",
+	"net", "fabricmc", "fabric-loader",
+	"0.18.5",
+	"fabric-loader-0.18.5.jar",
+)
+
 type Library_fabric struct {
 	Sha1   string
 	Sha256 string

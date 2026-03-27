@@ -57,7 +57,7 @@ func main() {
 		fmt.Scanln()
 		os.Exit(1)
 	}
-	fmt.Print("\033[?1049h")
+	//fmt.Print("\033[?1049h")
 
 	var ejecucion bool = true
 
