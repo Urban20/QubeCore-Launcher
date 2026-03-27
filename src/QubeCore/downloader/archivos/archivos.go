@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 
 	"net/http"
 	"os"
@@ -64,6 +65,7 @@ func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 		"-Xmx" + java_Ram,
 		"-Djava.library.path=" + dir_natives,
 		"-Dfile.encoding=UTF-8",
+		"--enable-native-access=ALL-UNNAMED",
 	}
 
 	optimizacion := []string{
@@ -176,7 +178,19 @@ func Cliente_JAR(tasks []data.Task, vj data.VersionJSON, clientPath string) []da
 func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = classpath
 
 	cp := fabric.Loader
-	for _, lib := range vj.Libraries {
+
+	vistos := map[string]string{} // clave artefacto -> ruta completa
+	librerias := []string{}
+	separador := string(filepath.ListSeparator)
+
+	registrar := func(ruta string) {
+
+		clave := fabric.ClaveArtefacto(ruta)
+		vistos[clave] = ruta
+
+	}
+
+	for _, lib := range vj.Libraries { // vanilla
 		if !so.LibraryAllowed(lib) {
 			continue
 		}
@@ -184,13 +198,24 @@ func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = cla
 		if a.URL == "" {
 			continue
 		}
-		cp += string(filepath.ListSeparator) + filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(a.Path))
+		ruta := filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(a.Path))
+		//cp += string(filepath.ListSeparator) + ruta
+		registrar(ruta)
+
 	}
 
 	for _, lib := range fabric.Iniciar_sistema_fabric() {
-		cp += string(filepath.ListSeparator) + lib
+		//cp += string(filepath.ListSeparator) + lib
+		registrar(lib)
 	}
-	return cp + string(filepath.ListSeparator) + clientPath
+
+	for _, ruta := range vistos {
+		librerias = append(librerias, ruta)
+	}
+
+	librerias = append(librerias, clientPath)
+
+	return cp + separador + strings.Join(librerias, separador)
 }
 
 func Descargar_Manifiest() ([]byte, error) {

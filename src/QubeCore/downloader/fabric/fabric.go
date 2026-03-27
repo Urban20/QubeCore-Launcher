@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"os"
+	"net/http"
 	"path/filepath"
 	"strings"
 )
@@ -41,9 +41,9 @@ func Formatear_json_fabric() Fabric {
 
 	// esto esta hardcodeado, si funciona hay que cambiarlo
 	fabric := Fabric{}
-	arch, _ := os.Open(filepath.Join(versiones.Ruta_versiones, "fabric-loader-0.18.5-1.21.11", "fabric-loader-0.18.5-1.21.11.json"))
-	b, _ := io.ReadAll(arch)
+	resp, _ := http.Get("https://meta.fabricmc.net/v2/versions/loader/1.21.8/0.18.5/profile/json")
 
+	b, _ := io.ReadAll(resp.Body)
 	json.Unmarshal(b, &fabric)
 
 	return fabric
@@ -84,8 +84,19 @@ func RutaMaven(archivo string) string {
 }
 
 func Iniciar_sistema_fabric() []string {
+
 	fabric := Formatear_json_fabric()
 
 	return Obtener_librerias_fabric(fabric)
 
+}
+
+// extrae "org/ow2/asm/asm" de "org/ow2/asm/asm/9.6/asm-9.6.jar"
+func ClaveArtefacto(ruta string) string {
+	partes := strings.Split(filepath.ToSlash(ruta), "/")
+	if len(partes) < 3 {
+		return ruta
+	}
+	// descarta las ultimas 2 partes (version y archivo)
+	return strings.Join(partes[:len(partes)-2], "/")
 }
