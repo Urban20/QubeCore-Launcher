@@ -31,7 +31,7 @@ func Descargar_version(versionURL, usuario, java_ram string, GORUNTINAS int) []s
 
 	archivos.Obtener_Json(versionURL, ruta_target_versiones, &vj)
 	clientPath := filepath.Join(versiones.Ruta_minecraft, "versions", vj.ID, vj.ID+".jar") // ruta versions
-	// client JAR
+	// client JAR ejemplo : 1.20.1.jar
 	tasks = archivos.Cliente_JAR(tasks, vj, clientPath)
 
 	// Guardar el version JSON localmente también

@@ -20,6 +20,7 @@ var (
 	Exe            = filepath.Dir(Exe_archivo) //ruta del exe
 	Ruta_minecraft = filepath.Clean(filepath.Join(Exe, ".minecraft"))
 	Ruta_versiones = filepath.Join(Ruta_minecraft, "versions")
+	Ruta_libraries = filepath.Join(Ruta_minecraft, "libraries")
 )
 
 const VERSIONES_JSON = "https://launchermeta.mojang.com/mc/game/version_manifest.json"

@@ -73,7 +73,7 @@ func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 		"-XX:MaxGCPauseMillis=50",
 		"-XX:G1HeapRegionSize=32M"}
 
-	bat := []string{"-cp", cp, vj.MainClass, // TODO: en algun momento voy a tener que cambiar esto
+	juego := []string{"-cp", cp, vj.MainClass, // TODO: en algun momento voy a tener que cambiar esto
 		// el hardcodeo es fragil
 		"--username", usuario,
 		"--version", vj.ID,
@@ -86,7 +86,7 @@ func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 		"--userProperties", "{}"}
 
 	jvm = append(jvm, optimizacion...)
-	jvm = append(jvm, bat...)
+	jvm = append(jvm, juego...)
 
 	return jvm
 }
@@ -110,6 +110,14 @@ func Maneja_Assets(tasks []data.Task, vj data.VersionJSON, assetIndexPath, ruta_
 	for _, obj := range ai.Objects {
 		hash := obj.Hash
 		prefix := hash[:2]
+
+		/*
+			ejemplo:
+			hash: a1b2c3d4e5f6...
+			url:  https://resources.download.minecraft.net/a1/a1b2c3d4e5f6...
+
+			esto de aca formatea el url de cada asset
+		*/
 		url := fmt.Sprintf("https://resources.download.minecraft.net/%s/%s", prefix, hash)
 		dest := filepath.Join(versiones.Ruta_minecraft, "assets", "objects", prefix, hash)
 		tasks = append(tasks, data.Task{
@@ -140,7 +148,7 @@ func Maneja_Librerias(tasks []data.Task, vj data.VersionJSON) []data.Task {
 		}
 		tasks = append(tasks, data.Task{
 			URL:      a.URL,
-			DestPath: filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(a.Path)),
+			DestPath: filepath.Join(versiones.Ruta_libraries, filepath.FromSlash(a.Path)),
 			SHA1:     a.SHA1,
 			Label:    a.Path,
 		})
@@ -181,8 +189,8 @@ func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = cla
 		a := lib.Downloads.Artifact
 		if a.URL == "" {
 			continue
-		}
-		cp += string(filepath.ListSeparator) + filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(a.Path))
+		} //
+		cp += string(filepath.ListSeparator) + filepath.Join(versiones.Ruta_libraries, filepath.FromSlash(a.Path))
 	}
 	return cp
 }

@@ -65,8 +65,8 @@ func Maneja_Natives(tasks []data.Task, vj data.VersionJSON, SO string) []data.Ta
 		}
 
 		tasks = append(tasks, data.Task{ //agregamos nueva task y retornamos
-			URL:      native.URL,
-			DestPath: filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(native.Path)),
+			URL:      native.URL, //
+			DestPath: filepath.Join(versiones.Ruta_libraries, filepath.FromSlash(native.Path)),
 			SHA1:     native.SHA1,
 			Label:    native.Path,
 		})
@@ -88,8 +88,8 @@ func Extraer_Natives(vj data.VersionJSON, SO string) error {
 		if naterr != nil {
 			continue
 		}
-
-		jarPath := filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(native.Path)) //btener la ruta de natives, from slash reemplaza / por el salsh que use el SO
+		//
+		jarPath := filepath.Join(versiones.Ruta_libraries, filepath.FromSlash(native.Path)) //btener la ruta de natives, from slash reemplaza / por el salsh que use el SO
 		r, err := zip.OpenReader(jarPath)
 		if err != nil {
 			return fmt.Errorf("abriendo natives jar %s: %w", jarPath, err)
