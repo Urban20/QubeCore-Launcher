@@ -5,6 +5,7 @@ import (
 	"QbCore/versiones"
 	so "downloader/SO"
 	"downloader/data"
+	"downloader/fabric"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -73,7 +74,7 @@ func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 		"-XX:MaxGCPauseMillis=50",
 		"-XX:G1HeapRegionSize=32M"}
 
-	bat := []string{"-cp", cp, vj.MainClass, // TODO: en algun momento voy a tener que cambiar esto
+	bat := []string{"-cp", cp, "net.fabricmc.loader.impl.launch.knot.KnotClient", // TODO: en algun momento voy a tener que cambiar esto
 		// el hardcodeo es fragil
 		"--username", usuario,
 		"--version", vj.ID,
@@ -183,6 +184,10 @@ func Crear_cp(clientPath string, vj data.VersionJSON) string { // nota: cp = cla
 			continue
 		}
 		cp += string(filepath.ListSeparator) + filepath.Join(versiones.Ruta_minecraft, "libraries", filepath.FromSlash(a.Path))
+	}
+
+	for _, lib := range fabric.Iniciar_sistema_fabric() {
+		cp += string(filepath.Separator) + lib
 	}
 	return cp
 }
