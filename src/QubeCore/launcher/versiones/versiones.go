@@ -1,7 +1,9 @@
 package versiones
 
 import (
+	"QbCore/configuracion"
 	"QbCore/consola"
+	"QbCore/utilidades"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -16,9 +18,7 @@ import (
 )
 
 var (
-	Exe_archivo, _ = os.Executable()
-	Exe            = filepath.Dir(Exe_archivo) //ruta del exe
-	Ruta_minecraft = filepath.Clean(filepath.Join(Exe, ".minecraft"))
+	Ruta_minecraft = configuracion.Config.Ruta_juego
 	Ruta_versiones = filepath.Join(Ruta_minecraft, "versions")
 	Ruta_libraries = filepath.Join(Ruta_minecraft, "libraries")
 )
@@ -122,19 +122,12 @@ func Listar_Versiones(bytes []byte, tipo string) ([]Versiones, error) {
 	return Versiones_disponibles, nil
 }
 
-func Existe_archivo(archivo string) bool {
-	_, error_ := os.Stat(archivo)
-
-	return error_ == nil
-
-}
-
 // retorna true si la carpeta de la version existe
 func Existe_version(version string) bool {
 
 	v := filepath.Join(Ruta_versiones, version)
 
-	return Existe_archivo(v)
+	return utilidades.Existe_archivo(v)
 
 }
 

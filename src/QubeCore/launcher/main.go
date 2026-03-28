@@ -4,6 +4,7 @@ import (
 	"QbCore/configuracion"
 	"QbCore/consola"
 	"QbCore/menu"
+	"QbCore/utilidades"
 	"QbCore/versiones"
 	"downloader/archivos"
 	"errors"
@@ -28,7 +29,7 @@ func manejar_error_manifiest() []byte {
 
 func cargar_version() ([]byte, error) {
 	var bytes []byte
-	if !versiones.Existe_archivo(versiones.ARCHIVO_INSTANCIAS) {
+	if !utilidades.Existe_archivo(versiones.ARCHIVO_INSTANCIAS) {
 		// si el json de versiones no existe obtiene el json de internet
 		consola.Imprimir_cartel("json no encontrado, descargando\n")
 

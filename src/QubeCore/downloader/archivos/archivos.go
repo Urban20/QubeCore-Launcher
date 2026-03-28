@@ -2,6 +2,7 @@ package archivos
 
 import (
 	"QbCore/consola"
+	"QbCore/utilidades"
 	"QbCore/versiones"
 	so "downloader/SO"
 	"downloader/data"
@@ -24,7 +25,7 @@ func FetchJSON(url, ruta_target string, target interface{}) error {
 	json_arch := path.Base(url)
 	archivo := filepath.Join(ruta_target, json_arch)
 
-	if versiones.Existe_archivo(archivo) {
+	if utilidades.Existe_archivo(archivo) {
 		// si ya existe leer de ahi
 
 		arch, err := os.Open(archivo)

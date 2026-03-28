@@ -16,8 +16,8 @@ import (
 
 // este modulo contiene las funciones de las opciones que se llaman a main
 
-var Archivo_CMD = filepath.Join(versiones.Exe, "log-cmd.log") // desvio el comando del stdout
-var Archivo_Stederr_CMD = filepath.Join(versiones.Exe, "log-cmd-error.log")
+var Archivo_CMD = filepath.Join(configuracion.Exe, "log-cmd.log") // desvio el comando del stdout
+var Archivo_Stederr_CMD = filepath.Join(configuracion.Exe, "log-cmd-error.log")
 
 // funciones  auxiliares
 

@@ -1,7 +1,7 @@
 package red
 
 import (
-	"QbCore/versiones"
+	"QbCore/utilidades"
 	"crypto/sha1"
 	"encoding/hex"
 	"errors"
@@ -28,7 +28,7 @@ func Sha1File(path string) (string, error) {
 
 func DownloadFile(url, destPath, expectedSHA1 string) error {
 
-	if expectedSHA1 == "" && versiones.Existe_archivo(destPath) {
+	if expectedSHA1 == "" && utilidades.Existe_archivo(destPath) {
 
 		return nil
 	}
