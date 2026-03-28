@@ -8,8 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"regexp"
-	"strconv"
 	"strings"
 
 	"net/http"
@@ -102,7 +100,7 @@ func Listar_Versiones(bytes []byte, tipo string) ([]Versiones, error) {
 
 		if tipo_json == tipo {
 
-			if Es_version_antigua(version_) {
+			if utilidades.Es_version_antigua(version_) {
 
 				version_ = version_ + espacios + consola.Resaltar_texto_amarillo("[posibles problemas al lanzar]")
 
@@ -139,50 +137,4 @@ func Menu_Versiones(versiones []Versiones) string {
 		versiones_str = append(versiones_str, version.Nombre)
 	}
 	return consola.Menu(versiones_str)
-}
-
-func Num_version(version string) string {
-
-	/*
-		ejemplos:
-		1.7 -> 7
-		1.20.1 -> 20
-	*/
-	var valor string
-	reg := regexp.MustCompile(`1\.(\d+)(?:.\d+)?`)
-
-	matches := reg.FindStringSubmatch(version)
-
-	if len(matches) == 2 {
-		valor = matches[1]
-		return valor
-	}
-
-	return valor
-}
-
-func Es_version_antigua(version string) bool {
-	/* estas versiones no las cubre el laucher por falta de compatibilidad,
-	las voy a dar por deprecadas (versiones menores a la 1.8 inclusive)
-	(almenos por ahora)
-	*/
-
-	if version == "1.8" {
-		return true
-	}
-
-	num, numerr := strconv.Atoi(Num_version(version))
-	if numerr != nil {
-		return false
-	}
-
-	return num <= 7
-
-}
-
-func Extraer_version(texto string) string {
-
-	reg := regexp.MustCompile(`(\d+\.\d+(?:\.\d+)?)`)
-	return reg.FindString(texto)
-
 }

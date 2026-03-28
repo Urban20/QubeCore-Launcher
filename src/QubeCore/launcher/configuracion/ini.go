@@ -16,12 +16,13 @@ import (
 func normalizar_ruta_juego(ruta_juego string) string {
 
 	ruta_juego = filepath.Clean(ruta_juego)
+	carpeta_juego := ".minecraft"
 
-	if filepath.Base(ruta_juego) == ".minecraft" {
+	if filepath.Base(ruta_juego) == carpeta_juego {
 		return ruta_juego
 	}
 
-	return filepath.Join(ruta_juego, ".minecraft")
+	return filepath.Join(ruta_juego, carpeta_juego)
 
 }
 
