@@ -121,13 +121,8 @@ func Setear_opciones() {
 func Opcion_ver_config(pantalla *pterm.AreaPrinter) {
 
 	consola.Limpiar_consola(pantalla)
-	consola.Mostrar_Opciones(
-		configuracion.Config.Usuario,
-		configuracion.Config.Ruta_Java,
-		configuracion.Config.Ram,
-		configuracion.Config.Hilos,
-	)
 	fmt.Print("\n\n")
+	consola.Impresion_centro(configuracion.Config.Mostrar_config())
 	consola.Imprimir_cartel("ENTER para volver")
 	fmt.Scanln()
 }

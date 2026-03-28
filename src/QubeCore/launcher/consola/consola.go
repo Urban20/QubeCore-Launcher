@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	VERSION  = "V1.0"
+	VERSION  = "V1.1"
 	AUTOR    = "Urb@n"
 	LAUNCHER = "QubeCore"
 )
@@ -113,13 +113,10 @@ func Imprimir_Alerta(alerta ...string) {
 
 }
 
-func Mostrar_Opciones(usuario, ruta_java, java_ram string, hilos int) {
-	fmt.Print(strings.Repeat("\n", 4))
-	opciones := fmt.Sprintf("Nombre de usuario: %s\nRuta de java: %s\nHilos en paralelo: %d\nRam de jvm: %s",
-		Color_principal.Sprint(usuario), ruta_java, hilos, java_ram)
+func Impresion_centro(str string) {
 
 	centro := pterm.DefaultCenter
-	centro.Println(opciones)
+	centro.Println(str)
 }
 
 // resalta texto con un color celeste y letras negras

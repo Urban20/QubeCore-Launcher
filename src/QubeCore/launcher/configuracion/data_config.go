@@ -1,9 +1,12 @@
 package configuracion
 
 import (
+	"QbCore/consola"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 )
 
 // este modulo maneja la logica de creacion y lectura de .ini (archivo de configuracion del programa)
@@ -47,4 +50,19 @@ type Configuracion_ struct { // los valores de la config
 	Ram        string
 	Hilos      int
 	Ruta_juego string
+}
+
+func (conf Configuracion_) Mostrar_config() string {
+
+	categorias := reflect.TypeOf(conf)
+	valores := reflect.ValueOf(conf)
+
+	var t string
+
+	for i := 0; i < categorias.NumField(); i++ {
+
+		t += fmt.Sprintf("%s : %v\n\n", consola.Color_principal.Sprint(categorias.Field(i).Name), valores.Field(i))
+	}
+
+	return t
 }
