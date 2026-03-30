@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"strings"
 )
 
 // este modulo maneja la logica de creacion y lectura de .ini (archivo de configuracion del programa)
@@ -61,7 +62,9 @@ func (conf Configuracion_) Mostrar_config() string {
 
 	for i := 0; i < categorias.NumField(); i++ {
 
-		t += fmt.Sprintf("%s : %v\n\n", consola.Color_principal.Sprint(categorias.Field(i).Name), valores.Field(i))
+		nombre_categoria := strings.Replace(categorias.Field(i).Name, "_", " ", -1)
+
+		t += fmt.Sprintf("%s : %v\n\n", consola.Color_principal.Sprint(nombre_categoria), valores.Field(i))
 	}
 
 	return t
