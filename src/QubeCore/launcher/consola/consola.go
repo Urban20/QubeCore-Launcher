@@ -26,6 +26,7 @@ func Menu(opciones []string) string {
 
 	seleccion := pterm.DefaultInteractiveSelect
 	seleccion.TextStyle = &pterm.Style{pterm.BgGreen, pterm.FgBlack}
+	seleccion.MaxHeight = 10
 	seleccion.DefaultText = "SELECCIONAR opcion"
 	seleccion.Selector = "➡ "
 	seleccion.SelectorStyle = &pterm.Style{pterm.FgWhite}
