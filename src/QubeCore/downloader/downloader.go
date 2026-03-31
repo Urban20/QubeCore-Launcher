@@ -18,7 +18,7 @@ import (
 // Downloader maneja la descarga de archivos y el lanzamiento del juego
 
 // descarga la carpeta justo con la version y retorna el comando de lanzamiento del juego
-func Descargar_version(versionURL, usuario, java_ram string, GORUNTINAS int) []string {
+func Descargar_version(versionURL, usuario, java_ram string, GORUNTINAS int) ([]string, error) {
 
 	var tasks []data.Task
 	var version_json = path.Base(versionURL)
@@ -30,7 +30,11 @@ func Descargar_version(versionURL, usuario, java_ram string, GORUNTINAS int) []s
 
 	var vj data.VersionJSON
 
-	archivos.Obtener_Json(versionURL, ruta_target_versiones, &vj)
+	if jsonerr := archivos.Obtener_Json(versionURL, ruta_target_versiones, &vj); jsonerr != nil {
+
+		return []string{}, jsonerr
+	}
+
 	clientPath := filepath.Join(versiones.Ruta_minecraft, "versions", vj.ID, vj.ID+".jar") // ruta versions
 	// client JAR ejemplo : 1.20.1.jar
 	tasks = archivos.Cliente_JAR(tasks, vj, clientPath)
@@ -59,5 +63,5 @@ func Descargar_version(versionURL, usuario, java_ram string, GORUNTINAS int) []s
 		consola.Imprimir_error("hubo un problema al extraer natives")
 	}
 
-	return bat
+	return bat, nil
 }

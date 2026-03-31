@@ -46,13 +46,14 @@ func FetchJSON(url, ruta_target string, target interface{}) error {
 
 }
 
-func Obtener_Json(versionURL, ruta_target string, vj *data.VersionJSON) {
+func Obtener_Json(versionURL, ruta_target string, vj *data.VersionJSON) error {
 
 	if err := FetchJSON(versionURL, ruta_target, vj); err != nil {
-		fmt.Println("Error obteniendo la version JSON:", err)
-		os.Exit(1)
+		return fmt.Errorf("Error obteniendo la version JSON: %w", err)
 	}
+
 	fmt.Printf("Version: %s | Assets: %s\n\n", vj.ID, vj.AssetIndex.ID)
+	return nil
 }
 
 func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {

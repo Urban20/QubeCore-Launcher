@@ -50,8 +50,7 @@ func ejecutar_comando(ruta_java string, comando []string) error {
 
 }
 
-func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versiones.Versiones) {
-	var comando []string
+func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versiones.Versiones) error {
 
 	if v.Nombre == "volver" {
 
@@ -59,7 +58,13 @@ func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versione
 
 	} else if v.Nombre == eleccion {
 
-		comando = downloader.Descargar_version(v.Url, configuracion.Config.Usuario, configuracion.Config.Ram, configuracion.Config.Hilos)
+		comando, descerr := downloader.Descargar_version(v.Url, configuracion.Config.Usuario, configuracion.Config.Ram, configuracion.Config.Hilos)
+
+		if descerr != nil {
+			return descerr
+
+		}
+
 		cmderr := ejecutar_comando(ruta_java, comando)
 
 		if cmderr != nil {
@@ -72,6 +77,8 @@ func buscar_instancia(interrumpido *bool, eleccion, ruta_java string, v versione
 		}
 
 	}
+
+	return nil
 }
 
 func Lanzar_versiones(bytes []byte) error {
@@ -96,7 +103,11 @@ func Lanzar_versiones(bytes []byte) error {
 			break
 		}
 
-		buscar_instancia(&interrumpido, version_elegida, configuracion.Config.Ruta_Java, v)
+		err := buscar_instancia(&interrumpido, version_elegida, configuracion.Config.Ruta_Java, v)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
