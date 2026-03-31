@@ -65,6 +65,6 @@ func RunWorkers(tasks []data.Task, workers int) {
 
 	var wg = sync.WaitGroup{}
 
-	carga := consola.Crear_barra(total_tareas, "(+) Descargando... ")
+	carga := consola.Crear_barra(total_tareas, "(+) Preparando lanzamiento... ")
 	lanzar_goruntina(&wg, errores, workers, ch, carga)
 }
