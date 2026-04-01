@@ -142,6 +142,7 @@ func Opcion_salir(ejecucion *bool) {
 	fmt.Print("\n\n")
 	consola.Imprimir_cartel("saliendo del launcher ...")
 	time.Sleep(time.Second * 3)
+	fmt.Print("\033[?1049l")
 	*ejecucion = false
 }
 
