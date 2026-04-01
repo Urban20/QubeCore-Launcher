@@ -4,9 +4,12 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 // modulo que tiene pequeñas funciones utiles para casos concretos
+var reg_versiones = regexp.MustCompile(`(\d+\.\d+(?:\.\d+)?)`)
+var reg_versiones_viejas = regexp.MustCompile(`1\.(\d+)(?:.\d+)?`)
 
 func Existe_archivo(archivo string) bool {
 	_, error_ := os.Stat(archivo)
@@ -17,8 +20,7 @@ func Existe_archivo(archivo string) bool {
 
 func Extraer_version(texto string) string {
 
-	reg := regexp.MustCompile(`(\d+\.\d+(?:\.\d+)?)`)
-	return reg.FindString(texto)
+	return reg_versiones.FindString(texto)
 
 }
 
@@ -30,9 +32,8 @@ func Num_version(version string) string {
 		1.20.1 -> 20
 	*/
 	var valor string
-	reg := regexp.MustCompile(`1\.(\d+)(?:.\d+)?`)
 
-	matches := reg.FindStringSubmatch(version)
+	matches := reg_versiones_viejas.FindStringSubmatch(version)
 
 	if len(matches) == 2 {
 		valor = matches[1]
@@ -42,11 +43,34 @@ func Num_version(version string) string {
 	return valor
 }
 
+func Es_version_nueva(version string) bool {
+
+	if !reg_versiones.Match([]byte(version)) {
+		return false
+	}
+
+	num_version_moderno, converr := strconv.Atoi(strings.Split(version, ".")[0])
+
+	if converr != nil {
+		return false
+	}
+
+	if num_version_moderno < 26 {
+		return false
+	}
+
+	return true
+}
+
 func Es_version_antigua(version string) bool {
 	/* estas versiones no las cubre el laucher por falta de compatibilidad,
 	las voy a dar por deprecadas (versiones menores a la 1.8 inclusive)
 	(almenos por ahora)
 	*/
+
+	if Es_version_nueva(version) {
+		return false
+	}
 
 	if version == "1.8" {
 		return true
