@@ -26,7 +26,11 @@ func Descargar_version(versionURL, usuario, java_ram string, GORUNTINAS int) ([]
 	var ruta_target_versiones = filepath.Join(versiones.Ruta_versiones, carpeta_version)
 	var ruta_target_assets = filepath.Join(versiones.Ruta_minecraft, "assets", "indexes")
 
-	var SO = so.CurrentOS()
+	SO, siserr := so.SistemaOP()
+
+	if siserr != nil {
+		return []string{}, siserr
+	}
 
 	var vj data.VersionJSON
 

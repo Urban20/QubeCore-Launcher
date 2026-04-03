@@ -90,7 +90,7 @@ func main() {
 		case consola.Opcion1:
 
 			if vererr := menu.Lanzar_versiones(bytes); vererr != nil {
-				consola.Imprimir_error("hubo un problema al lanzar las versiones: ", vererr.Error())
+				consola.Imprimir_error(vererr.Error())
 				fmt.Scanln()
 			}
 
