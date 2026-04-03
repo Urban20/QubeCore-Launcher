@@ -50,6 +50,8 @@ func TestEs_version_antigua(t *testing.T) {
 		{name: "version antigua 3", version: "1.5.2", want: true},
 		{name: "caso borde", version: "1.8", want: true},
 		{name: "limite", version: "1.8.1", want: false},
+		{name: "malformado", version: "1.7.1.1", want: false},
+		{name: "malformado 2", version: "26.1.1.1", want: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -100,6 +102,8 @@ func TestEs_version_nueva(t *testing.T) {
 		{name: "verdadero 1", version: "26.1", want: true},
 		{name: "verdadero 2", version: "26.1.1", want: true},
 		{name: "verdadero 3", version: "27.1.1", want: true},
+		{name: "malformado", version: "27.1.1.0", want: false},
+		{name: "malformado 2", version: "1.1.0.1", want: false},
 		{name: "verdadero 4", version: "27.1", want: true},
 		{name: "verdadero 3", version: "27", want: false},
 	}

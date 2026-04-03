@@ -3,6 +3,7 @@ package utilidades
 import (
 	"os"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -45,6 +46,10 @@ func Num_version(version string) string {
 
 func Es_version_nueva(version string) bool {
 
+	if !slices.Contains([]int{2, 3}, len(strings.Split(version, "."))) {
+		return false
+	}
+
 	if !reg_versiones.Match([]byte(version)) {
 		return false
 	}
@@ -68,6 +73,10 @@ func Es_version_antigua(version string) bool {
 	(almenos por ahora)
 	*/
 
+	if !slices.Contains([]int{2, 3}, len(strings.Split(version, "."))) {
+		return false
+	}
+
 	if Es_version_nueva(version) {
 		return false
 	}
@@ -76,10 +85,7 @@ func Es_version_antigua(version string) bool {
 		return true
 	}
 
-	num, numerr := strconv.Atoi(Num_version(version))
-	if numerr != nil {
-		return false
-	}
+	num, _ := strconv.Atoi(Num_version(version))
 
 	return num <= 7
 
