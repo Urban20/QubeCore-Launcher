@@ -24,7 +24,7 @@ var (
 	// usuario
 	seccion_usuario = "Usuario"
 	opcion_usuario  = "Nickname"
-	Usuario_default = "Steve"
+	Usuario_default = ""
 
 	// java
 	seccion_Java            = "Java"

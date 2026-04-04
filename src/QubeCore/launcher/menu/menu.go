@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/pterm/pterm"
@@ -150,4 +151,28 @@ func No_implementado() {
 	fmt.Print("\n\n")
 	consola.Imprimir_Alerta("no implementado todavia")
 	fmt.Scanln()
+}
+
+func Preguntar_usuario() error {
+
+	if configuracion.Config.Usuario != "" {
+		return nil
+	}
+
+	fmt.Print("\033[H")
+	fmt.Println("Nombre de usuario a utilizar: ")
+	consola.Imprimir_cartel("Para hacer un usuario permanente se debe modificar ", configuracion.NOMBRE_CONFIG, "\nEste usuario es temporal")
+
+	for configuracion.Config.Usuario == "" || strings.Contains(configuracion.Config.Usuario, " ") {
+		usuario, err := consola.Casillero()
+
+		if err != nil {
+			return err
+		}
+
+		configuracion.Config.Usuario = usuario
+	}
+
+	return nil
+
 }

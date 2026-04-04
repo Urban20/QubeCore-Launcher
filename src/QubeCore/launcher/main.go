@@ -12,6 +12,8 @@ import (
 	"os"
 )
 
+var ansierr = consola.Iniciar_ANSI()
+
 // invoca Descargar_manifiest manejando sus errores
 func manejar_error_manifiest() []byte {
 
@@ -52,13 +54,15 @@ func main() {
 
 	// la configuracion se inicia al iniciar el programa en su respectivo modulo
 
-	if err := consola.Iniciar_ANSI(); err != nil {
-		err := fmt.Errorf("esta terminal no es compatible con el launcher: %w", err)
+	if ansierr != nil {
+		err := fmt.Errorf("esta terminal no es compatible con el launcher: %w", ansierr)
 		fmt.Println(err.Error())
 		fmt.Scanln()
 		os.Exit(1)
 	}
 	fmt.Print("\033[?1049h")
+
+	menu.Preguntar_usuario()
 
 	var ejecucion bool = true
 

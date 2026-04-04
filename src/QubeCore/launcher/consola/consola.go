@@ -1,11 +1,14 @@
 package consola
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/pterm/pterm"
 	"github.com/pterm/pterm/putils"
+	"golang.org/x/term"
 )
 
 const (
@@ -152,5 +155,37 @@ func Crear_barra(total int, titulo string) *pterm.ProgressbarPrinter {
 	p, _ := barra.WithTotal(total).WithTitle(titulo).Start()
 
 	return p
+
+}
+
+func input() string {
+	sc := bufio.NewScanner(os.Stdin)
+	sc.Scan()
+	return sc.Text()
+
+}
+
+func Casillero() (string, error) {
+
+	fd := os.Stdout.Fd()
+	n, _, termerr := term.GetSize(int(fd))
+	borde := strings.Repeat("─", n-2)
+	casillero := "│" + strings.Repeat(" ", n-2) + "│"
+	retroceso := "\033[F"
+
+	if termerr != nil {
+
+		return "", termerr
+
+	}
+
+	fmt.Print("┌", borde, "┐\n")
+	fmt.Print(casillero + "\n")
+	fmt.Print("└", borde, "┘")
+	fmt.Print(retroceso, "│ \033[0;92m>> ", "\033[0m")
+
+	input := input()
+
+	return input, nil
 
 }
