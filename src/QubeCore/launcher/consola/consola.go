@@ -182,7 +182,7 @@ func Casillero() (string, error) {
 	fmt.Print("┌", borde, "┐\n")
 	fmt.Print(casillero + "\n")
 	fmt.Print("└", borde, "┘")
-	fmt.Print(retroceso, "│ \033[0;92m>> ", "\033[0m")
+	fmt.Printf("%s│ %s ", retroceso, pterm.Gray(">> "))
 
 	input := input()
 

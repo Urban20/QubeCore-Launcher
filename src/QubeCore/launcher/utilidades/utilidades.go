@@ -90,3 +90,20 @@ func Es_version_antigua(version string) bool {
 	return num <= 7
 
 }
+
+func Usuario_valido(usuario string) bool {
+
+	/*
+	   para que un usuario sea valido debe tener:
+
+	   * de 3 a 16 caracteres
+	   * sin caracteres especiales salvo "_"
+
+
+	*/
+
+	reg := regexp.MustCompile(`^[a-zA-Z0-9_]{3,16}$`)
+
+	return reg.Match([]byte(usuario))
+
+}

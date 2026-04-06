@@ -2,6 +2,7 @@ package utilidades_test
 
 import (
 	"QbCore/utilidades"
+	"strings"
 	"testing"
 )
 
@@ -113,6 +114,34 @@ func TestEs_version_nueva(t *testing.T) {
 
 			if got != tt.want {
 				t.Errorf("Es_version_nueva() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestUsuario_valido(t *testing.T) {
+	tests := []struct {
+		name string
+
+		usuario string
+		want    bool
+	}{
+		{name: "incorrecto 1", usuario: "Urb@n", want: false},
+		{name: "incorrecto 2", usuario: "", want: false},
+		{name: "incorrecto 3", usuario: strings.Repeat("test", 16), want: false},
+		{name: "incorrecto 4", usuario: "test test", want: false},
+		{name: "incorrecto 5", usuario: strings.Repeat("test", 16), want: false},
+		{name: "incorrecto 6", usuario: "Urban@", want: false},
+		{name: "correcto 1", usuario: "Urb4n_", want: true},
+		{name: "correcto 2", usuario: "123", want: true},
+		{name: "espacio vacio", usuario: " ", want: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := utilidades.Usuario_valido(tt.usuario)
+
+			if got != tt.want {
+				t.Errorf("Usuario_valido() = %v, want %v", got, tt.want)
 			}
 		})
 	}

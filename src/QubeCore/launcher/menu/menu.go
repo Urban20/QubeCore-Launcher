@@ -3,13 +3,13 @@ package menu
 import (
 	"QbCore/configuracion"
 	"QbCore/consola"
+	"QbCore/utilidades"
 	"QbCore/versiones"
 	"downloader"
 	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/pterm/pterm"
@@ -153,26 +153,35 @@ func No_implementado() {
 	fmt.Scanln()
 }
 
-func Preguntar_usuario() error {
+func Preguntar_usuario() {
 
 	if configuracion.Config.Usuario != "" {
-		return nil
+		return
 	}
 
 	fmt.Print("\033[H")
+	consola.Imprimir_logo()
 	fmt.Println("Nombre de usuario a utilizar: ")
 	consola.Imprimir_cartel("Para hacer un usuario permanente se debe modificar ", configuracion.NOMBRE_CONFIG, "\nEste usuario es temporal")
 
-	for configuracion.Config.Usuario == "" || strings.Contains(configuracion.Config.Usuario, " ") {
+	for {
+
 		usuario, err := consola.Casillero()
 
 		if err != nil {
-			return err
+			fmt.Print("\n")
+			consola.Imprimir_error(err.Error())
+			continue
+		}
+
+		if !utilidades.Usuario_valido(usuario) {
+			fmt.Print("\n")
+			consola.Imprimir_error("El usuario ingresado no es valido")
+			continue
 		}
 
 		configuracion.Config.Usuario = usuario
+		return
 	}
-
-	return nil
 
 }
