@@ -10,7 +10,7 @@ import (
 
 // modulo que tiene pequeñas funciones utiles para casos concretos
 var reg_versiones = regexp.MustCompile(`(\d+\.\d+(?:\.\d+)?)`)
-var reg_versiones_viejas = regexp.MustCompile(`1\.(\d+)(?:.\d+)?`)
+var reg_versiones_viejas = regexp.MustCompile(`1\.(\d+)(?:\.\d+)?`)
 
 func Existe_archivo(archivo string) bool {
 	_, error_ := os.Stat(archivo)

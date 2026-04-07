@@ -13,8 +13,8 @@ Launcher minimalista y portable de línea de comandos para Minecraft Java Editio
 
 ```bash
 git clone https://github.com/Urban20/QubeCore-Launcher.git
-cd QubeCore-Launcher/src
-go build -o qubecore .
+cd QubeCore-Launcher/src/QubeCore/launcher/
+go build qubecore .
 ```
 
 ## Uso
