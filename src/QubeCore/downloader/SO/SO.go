@@ -15,10 +15,10 @@ var sistema_op = map[string]string{
 // esta funcion privada esta fraccionada porque se utiliza para testing
 func sistemaOP(sistema string) (string, error) {
 
-	sis := sistema_op[sistema]
+	sis, ok := sistema_op[sistema]
 
-	if sis == "" {
-		return "", fmt.Errorf("el sistema operativo detectado no es compatible: %s", sistema)
+	if !ok {
+		return sis, fmt.Errorf("el sistema operativo detectado no es compatible: %s", sistema)
 	}
 	return sis, nil
 
