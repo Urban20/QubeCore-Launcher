@@ -77,8 +77,7 @@ func main() {
 
 	menu.Setear_opciones()
 
-	Pantalla := consola.Iniciar_Pantalla()
-	consola.Limpiar_consola(Pantalla)
+	consola.Limpiar_consola(menu.Pantalla)
 
 	for ejecucion {
 
@@ -99,7 +98,7 @@ func main() {
 			}
 
 		case consola.Opcion2:
-			menu.Opcion_ver_config(Pantalla)
+			menu.Opcion_ver_config(menu.Pantalla)
 
 		case consola.Opcion3:
 
@@ -113,6 +112,6 @@ func main() {
 
 		}
 
-		consola.Limpiar_consola(Pantalla)
+		consola.Limpiar_consola(menu.Pantalla)
 	}
 }

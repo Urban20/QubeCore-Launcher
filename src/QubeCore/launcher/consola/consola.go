@@ -23,7 +23,6 @@ var Opcion3 = "actualizar lista de versiones"
 var Opcion4 = "salir"
 
 var Color_principal = pterm.NewRGB(131, 184, 39)
-var Pantalla = Iniciar_Pantalla()
 
 func Menu(opciones []string) string {
 

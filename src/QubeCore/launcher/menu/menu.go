@@ -19,6 +19,7 @@ import (
 
 var Archivo_CMD = filepath.Join(configuracion.Exe, "log-cmd.log") // desvio el comando del stdout
 var Archivo_Stederr_CMD = filepath.Join(configuracion.Exe, "log-cmd-error.log")
+var Pantalla = consola.Iniciar_Pantalla()
 
 // funciones  auxiliares
 
@@ -160,11 +161,12 @@ func Preguntar_usuario() {
 	}
 
 	fmt.Print("\033[H")
-	consola.Imprimir_logo()
-	fmt.Println("Nombre de usuario a utilizar: ")
-	consola.Imprimir_cartel("Para hacer un usuario permanente se debe modificar ", configuracion.NOMBRE_CONFIG, "\nEste usuario es temporal")
 
 	for {
+
+		consola.Imprimir_logo()
+		fmt.Println("Nombre de usuario a utilizar: ")
+		consola.Imprimir_cartel("Para hacer un usuario permanente se debe modificar ", configuracion.NOMBRE_CONFIG, "\nEste usuario es temporal")
 
 		usuario, err := consola.Casillero()
 
@@ -175,8 +177,11 @@ func Preguntar_usuario() {
 		}
 
 		if !utilidades.Usuario_valido(usuario) {
+
 			fmt.Print("\n")
 			consola.Imprimir_error("El usuario ingresado no es valido")
+			time.Sleep(time.Second * 1)
+			consola.Limpiar_consola(Pantalla)
 			continue
 		}
 
