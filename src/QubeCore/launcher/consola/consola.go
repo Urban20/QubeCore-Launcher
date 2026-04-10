@@ -30,7 +30,7 @@ func Menu(opciones []string) string {
 	seleccion.TextStyle = &pterm.Style{pterm.BgGreen, pterm.FgBlack}
 	seleccion.MaxHeight = 10
 	seleccion.DefaultText = "SELECCIONAR opcion"
-	seleccion.Selector = "➡ "
+	seleccion.Selector = pterm.Gray(">> ")
 	seleccion.SelectorStyle = &pterm.Style{pterm.FgWhite}
 	seleccion.FilterInputPlaceholder = "[TIPEAR opcion]"
 	op, _ := seleccion.WithOptions(opciones).Show()
