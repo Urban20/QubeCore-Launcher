@@ -98,7 +98,11 @@ func main() {
 			}
 
 		case consola.Opcion2:
-			menu.Opcion_ver_config(menu.Pantalla)
+
+			if err := menu.Opcion_ver_config(menu.Pantalla); err != nil {
+				consola.Imprimir_error(err.Error())
+				fmt.Scanln()
+			}
 
 		case consola.Opcion3:
 

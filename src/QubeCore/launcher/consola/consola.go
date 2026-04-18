@@ -188,3 +188,32 @@ func Casillero() (string, error) {
 	return input, nil
 
 }
+
+// volver para atras al presionar una tecla
+func Tecla_volver() error {
+	Impresion_centro(pterm.FgGray.Sprint("Q para volver"))
+
+	estado, err := term.MakeRaw(int(os.Stdin.Fd()))
+
+	if err != nil {
+		return err
+	}
+
+	for {
+
+		tecla := make([]byte, 1)
+		_, err := os.Stdin.Read(tecla)
+
+		if err != nil {
+			return err
+		}
+
+		if tecla[0] == 'q' {
+
+			term.Restore(int(os.Stdin.Fd()), estado)
+			return nil
+		}
+
+	}
+
+}

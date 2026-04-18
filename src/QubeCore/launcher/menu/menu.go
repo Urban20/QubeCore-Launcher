@@ -131,13 +131,18 @@ func Setear_opciones() {
 }
 
 // opciones
-func Opcion_ver_config(pantalla *pterm.AreaPrinter) {
+func Opcion_ver_config(pantalla *pterm.AreaPrinter) error {
 
 	consola.Limpiar_consola(pantalla)
 	fmt.Print("\n\n")
 	consola.Impresion_centro(configuracion.Config.Mostrar_config())
-	consola.Imprimir_cartel("ENTER para volver")
-	fmt.Scanln()
+
+	if err := consola.Tecla_volver(); err != nil {
+		return err
+	}
+
+	return nil
+
 }
 
 func Opcion_salir(ejecucion *bool) {
