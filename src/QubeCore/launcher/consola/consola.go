@@ -193,7 +193,8 @@ func Casillero() (string, error) {
 func Tecla_volver() error {
 	Impresion_centro(pterm.FgGray.Sprint("Q para volver"))
 
-	estado, err := term.MakeRaw(int(os.Stdin.Fd()))
+	fd := int(os.Stdin.Fd())
+	estado, err := term.MakeRaw(fd)
 
 	if err != nil {
 		return err
@@ -210,7 +211,7 @@ func Tecla_volver() error {
 
 		if tecla[0] == 'q' {
 
-			term.Restore(int(os.Stdin.Fd()), estado)
+			term.Restore(fd, estado)
 			return nil
 		}
 
