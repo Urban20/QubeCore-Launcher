@@ -22,7 +22,7 @@ var Opcion2 = "ver configuracion"
 var Opcion3 = "actualizar lista de versiones"
 var Opcion4 = "salir"
 
-var Color_principal = pterm.NewRGB(131, 184, 39)
+var Color_principal = pterm.NewRGB(30, 176, 105)
 
 func Menu(opciones []string) string {
 
@@ -191,6 +191,7 @@ func Casillero() (string, error) {
 
 // volver para atras al presionar una tecla
 func Tecla_volver() error {
+	fmt.Print("\n")
 	Impresion_centro(pterm.FgGray.Sprint("Q para volver"))
 
 	fd := int(os.Stdin.Fd())

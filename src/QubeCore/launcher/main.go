@@ -21,7 +21,8 @@ func manejar_error_manifiest() []byte {
 
 	if manifiesterr != nil {
 		consola.Imprimir_error("hubo un problema al descargar el manifiest: ", manifiesterr.Error())
-		fmt.Scanln()
+
+		consola.Tecla_volver()
 		return []byte{}
 	}
 
@@ -70,7 +71,8 @@ func main() {
 
 	if versionerr != nil {
 		consola.Imprimir_error("error al cargar las versiones: ", versionerr.Error())
-		fmt.Scanln()
+
+		consola.Tecla_volver()
 		os.Exit(1)
 
 	}
@@ -94,7 +96,8 @@ func main() {
 
 			if vererr := menu.Lanzar_versiones(bytes); vererr != nil {
 				consola.Imprimir_error(vererr.Error())
-				fmt.Scanln()
+
+				consola.Tecla_volver()
 			}
 
 		case consola.Opcion2:
