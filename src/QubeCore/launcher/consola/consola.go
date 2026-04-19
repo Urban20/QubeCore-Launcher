@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	VERSION  = "V1.1"
+	VERSION  = "V1.2"
 	AUTOR    = "Urb@n"
 	LAUNCHER = "QubeCore"
 )
