@@ -58,9 +58,11 @@ func main() {
 	if ansierr != nil {
 		err := fmt.Errorf("esta terminal no es compatible con el launcher: %w", ansierr)
 		fmt.Println(err.Error())
-		fmt.Scanln()
+		consola.Tecla_volver()
 		os.Exit(1)
 	}
+
+	fmt.Printf("\033]0;%s %s\007", consola.LAUNCHER, consola.VERSION)
 	fmt.Print("\033[?1049h")
 
 	menu.Preguntar_usuario()
