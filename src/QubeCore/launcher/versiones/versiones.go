@@ -123,7 +123,7 @@ func Listar_Versiones(bytes []byte, tipo string) ([]Versiones, error) {
 // retorna true si la carpeta de la version existe
 func Existe_version(version string) bool {
 
-	v := filepath.Join(Ruta_versiones, version)
+	v := filepath.Join(Ruta_versiones, version, version+".jar")
 
 	return utilidades.Existe_archivo(v)
 

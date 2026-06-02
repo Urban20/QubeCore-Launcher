@@ -54,9 +54,13 @@ func Descargar_version(versionURL, usuario, java_ram string, GORUNTINAS int) ([]
 
 	tasks = natives.Maneja_Natives(tasks, vj, SO)
 
-	// Descargar todo
-	goruntinas.RunWorkers(tasks, GORUNTINAS)
+	// solo descargo si falta la version, especificamente si falta la version.json
+	if !versiones.Existe_version(vj.ID) {
+		// si bien esta funcion (Descargar_version()) deberia ocuparse de descargar unicamente
+		// este es un hack rapido para acortar tiempo de ejecucion en versiones que ya estan para ahorrar tiempo
 
+		goruntinas.RunWorkers(tasks, GORUNTINAS)
+	}
 	// Armar classpath: client.jar + cada library permitida
 	cp := archivos.Crear_cp(clientPath, vj)
 
