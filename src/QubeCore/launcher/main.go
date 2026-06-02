@@ -85,11 +85,8 @@ func main() {
 
 	for ejecucion {
 
-		consola.Cartel_Usuario(fmt.Sprintf("Usuario iniciado como: %s\nentrar a %s para modificarlo", consola.Color_principal.Sprint(configuracion.Config.Usuario), consola.Color_principal.Sprint(configuracion.Ruta_config)))
+		consola.Cartel_Usuario(configuracion.Config.Usuario, configuracion.Ruta_config)
 		consola.Imprimir_logo()
-
-		consola.Instrucciones()
-
 		eleccion := consola.Menu(menu.Menu_opciones)
 
 		switch eleccion {

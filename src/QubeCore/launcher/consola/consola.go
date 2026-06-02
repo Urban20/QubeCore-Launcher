@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/charmbracelet/glamour"
 	"github.com/pterm/pterm"
 	"github.com/pterm/pterm/putils"
 	"golang.org/x/term"
@@ -27,12 +28,12 @@ var Color_principal = pterm.NewRGB(30, 176, 105)
 func Menu(opciones []string) string {
 
 	seleccion := pterm.DefaultInteractiveSelect
-	seleccion.TextStyle = &pterm.Style{pterm.BgGreen, pterm.FgBlack}
+	seleccion.TextStyle = &pterm.Style{pterm.FgYellow}
 	seleccion.MaxHeight = 10
-	seleccion.DefaultText = "SELECCIONAR opcion"
+	seleccion.DefaultText = "Tipear o seleccionar opcion"
 	seleccion.Selector = pterm.Gray(">> ")
 	seleccion.SelectorStyle = &pterm.Style{pterm.FgWhite}
-	seleccion.FilterInputPlaceholder = "[TIPEAR opcion]"
+	seleccion.FilterInputPlaceholder = ""
 	op, _ := seleccion.WithOptions(opciones).Show()
 	return op
 
@@ -69,7 +70,7 @@ func Limpiar_consola(pantalla *pterm.AreaPrinter) {
 }
 
 func Imprimir_logo() {
-	banner := fmt.Sprintf("Launcher CLI para Minecraft Java\nVersion: %s\nEscrito por: %s", VERSION, AUTOR)
+	banner := fmt.Sprintf("Launcher de terminal para Minecraft Java\nVersion: %s\nEscrito por: %s", VERSION, AUTOR)
 	//Limpiar_consola()
 	logo, _ := pterm.DefaultBigText.WithLetters(putils.LettersFromStringWithRGB(LAUNCHER, Color_principal)).Srender()
 	pterm.DefaultCenter.Println(logo)
@@ -77,14 +78,12 @@ func Imprimir_logo() {
 	pterm.DefaultCenter.WithCenterEachLineSeparately().Println(pterm.Gray(banner))
 }
 
-func Cartel_Usuario(usuario string) {
+func Cartel_Usuario(usuario, ruta_config string) {
 
-	cartel := pterm.Info
-	cartel.Prefix.Text = "USUARIO"
-	cartel.Prefix.Style = &pterm.Style{pterm.BgLightMagenta, pterm.FgBlack}
-	cartel.MessageStyle = &pterm.Style{pterm.FgLightWhite}
-	cartel.Println(usuario)
-	fmt.Print("\n\n\n")
+	msg := fmt.Sprintf("# USUARIO:\n*%s*\n# Modificar ajustes en:\n*%s*\n", usuario, ruta_config)
+
+	msg, _ = glamour.Render(msg, "dracula")
+	fmt.Println(msg)
 
 }
 
@@ -132,18 +131,6 @@ func Resaltar_texto(texto string) string {
 func Resaltar_texto_amarillo(texto string) string {
 
 	return pterm.FgLightYellow.Sprint(texto)
-}
-
-func Instrucciones() {
-	fmt.Print(strings.Repeat("\n", 4))
-	texto := "Teclas ←↑→↓, ENTER para confirmar"
-
-	instrucciones := pterm.Info
-	instrucciones.Prefix.Text = "INSTRUCCIONES"
-	instrucciones.Prefix.Style = &pterm.Style{pterm.BgLightGreen, pterm.FgBlack}
-	instrucciones.MessageStyle = &pterm.Style{pterm.FgDarkGray}
-	instrucciones.Println(texto + "\n\n")
-
 }
 
 func Crear_barra(total int, titulo string) *pterm.ProgressbarPrinter {
