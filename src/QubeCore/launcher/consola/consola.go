@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 
+	_ "embed"
+
 	"github.com/charmbracelet/glamour"
 	"github.com/pterm/pterm"
 	"github.com/pterm/pterm/putils"
@@ -22,6 +24,9 @@ var Opcion1 = "lanzar version"
 var Opcion2 = "ver configuracion"
 var Opcion3 = "actualizar lista de versiones"
 var Opcion4 = "salir"
+
+//go:embed markdown.json
+var markdown []byte
 
 var Color_principal = pterm.NewRGB(30, 176, 105)
 
@@ -80,9 +85,12 @@ func Imprimir_logo() {
 
 func Cartel_Usuario(usuario, ruta_config string) {
 
-	msg := fmt.Sprintf("# USUARIO:\n*%s*\n# Modificar ajustes en:\n*%s*\n", usuario, ruta_config)
+	msg := fmt.Sprintf("# USUARIO\n*%s*\n# Ruta de configuracion\n*%s*\n", usuario, ruta_config)
 
-	msg, _ = glamour.Render(msg, "dracula")
+	render, _ := glamour.NewTermRenderer(glamour.WithStylesFromJSONBytes(markdown))
+
+	msg, _ = render.Render(msg)
+
 	fmt.Println(msg)
 
 }

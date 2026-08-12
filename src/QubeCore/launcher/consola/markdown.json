@@ -1,0 +1,11 @@
+{
+"h1": {
+    "margin": 2,
+    "bold": true,
+    "background_color": "#309139",
+    "prefix":">> ",
+    "suffix":" <<"
+
+}
+
+}
