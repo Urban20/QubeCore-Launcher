@@ -64,7 +64,7 @@ func (conf Configuracion_) Mostrar_config() string {
 
 		nombre_categoria := strings.Replace(categorias.Field(i).Name, "_", " ", -1)
 
-		t += fmt.Sprintf("%s : %v\n\n", consola.Color_principal.Sprint(nombre_categoria), valores.Field(i))
+		t += fmt.Sprintf("%s: %v\n", consola.Color_principal.Sprint(nombre_categoria), valores.Field(i))
 	}
 
 	return t

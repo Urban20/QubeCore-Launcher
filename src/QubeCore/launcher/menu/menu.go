@@ -113,7 +113,7 @@ func Opcion_ver_config(pantalla *pterm.AreaPrinter) error {
 
 	consola.Limpiar_consola(pantalla)
 	fmt.Print("\n\n")
-	consola.Impresion_centro(configuracion.Config.Mostrar_config())
+	consola.Impresion_centro(pterm.DefaultBox.WithPadding(2).WithTitle("Configuracion").Sprint(configuracion.Config.Mostrar_config()))
 
 	if err := consola.Tecla_volver(); err != nil {
 		return err
@@ -127,7 +127,7 @@ func Opcion_salir(ejecucion *bool) {
 	fmt.Print("\n\n")
 	consola.Imprimir_cartel("saliendo del launcher ...")
 	time.Sleep(time.Second * 3)
-	fmt.Print("\033[?1049l")
+	fmt.Print(consola.ALTERNATE_RESET)
 	*ejecucion = false
 }
 
@@ -143,7 +143,7 @@ func Preguntar_usuario() {
 		return
 	}
 
-	fmt.Print("\033[H")
+	fmt.Print(consola.MODO_HOME)
 
 	for {
 

@@ -63,7 +63,7 @@ func main() {
 	}
 
 	fmt.Printf("\033]0;%s %s\007", consola.LAUNCHER, consola.VERSION)
-	fmt.Print("\033[?1049h")
+	fmt.Print(consola.MODO_ALTERNATE)
 
 	menu.Preguntar_usuario()
 
