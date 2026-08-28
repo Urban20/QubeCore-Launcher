@@ -15,9 +15,11 @@ import (
 )
 
 const (
-	VERSION  = "V1.2"
-	AUTOR    = "Urb@n"
-	LAUNCHER = "QubeCore"
+	VERSION       = "V1.2"
+	AUTOR         = "Urb@n"
+	LAUNCHER      = "QubeCore"
+	CURSOR_ACULTO = "\033[?25l"
+	CURSOR_RESET  = "\033[?25h"
 )
 
 var Opcion1 = "lanzar version"

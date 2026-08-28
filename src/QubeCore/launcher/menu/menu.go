@@ -23,20 +23,6 @@ var Pantalla = consola.Iniciar_Pantalla()
 
 // funciones  auxiliares
 
-func Formatear_opciones_menu(opciones ...string) []string {
-
-	var formateados = []string{}
-
-	for n, op := range opciones {
-		n++
-
-		formateados = append(formateados, fmt.Sprintf("%d) %s", n, op))
-
-	}
-	return formateados
-
-}
-
 func ejecutar_comando(ruta_java string, comando []string) error {
 	cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
 	out, _ := os.Create(Archivo_CMD)
@@ -116,19 +102,11 @@ func Lanzar_versiones(bytes []byte) error {
 
 }
 
-var Menu_opciones = Formatear_opciones_menu(
+var Menu_opciones = []string{
 	consola.Opcion1,
 	consola.Opcion2,
 	consola.Opcion3,
-	consola.Opcion4)
-
-func Setear_opciones() {
-	consola.Opcion1 = Menu_opciones[0]
-	consola.Opcion2 = Menu_opciones[1]
-	consola.Opcion3 = Menu_opciones[2]
-	consola.Opcion4 = Menu_opciones[3]
-
-}
+	consola.Opcion4}
 
 // opciones
 func Opcion_ver_config(pantalla *pterm.AreaPrinter) error {

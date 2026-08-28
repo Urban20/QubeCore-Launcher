@@ -79,8 +79,6 @@ func main() {
 
 	}
 
-	menu.Setear_opciones()
-
 	consola.Limpiar_consola(menu.Pantalla)
 
 	for ejecucion {
@@ -100,7 +98,7 @@ func main() {
 			}
 
 		case consola.Opcion2:
-
+			fmt.Print(consola.CURSOR_ACULTO)
 			if err := menu.Opcion_ver_config(menu.Pantalla); err != nil {
 				consola.Imprimir_error(err.Error())
 				fmt.Scanln()
@@ -111,6 +109,7 @@ func main() {
 			bytes = manejar_error_manifiest()
 
 		case consola.Opcion4:
+			fmt.Print(consola.CURSOR_RESET)
 			menu.Opcion_salir(&ejecucion)
 
 		default:
