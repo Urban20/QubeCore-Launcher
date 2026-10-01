@@ -25,8 +25,20 @@ var Pantalla = consola.Iniciar_Pantalla()
 
 func ejecutar_comando(ruta_java string, comando []string) error {
 	cmd := exec.Command(ruta_java, comando...) // asumo que el usuario tiene java
-	out, _ := os.Create(Archivo_CMD)
-	stederr, _ := os.Create(Archivo_Stederr_CMD)
+	out, archerr := os.Create(Archivo_CMD)
+
+	if archerr != nil {
+
+		return archerr
+
+	}
+
+	stederr, errstd := os.Create(Archivo_Stederr_CMD)
+
+	if errstd != nil {
+		return errstd
+	}
+
 	cmd.Stdout = out
 	cmd.Stderr = stederr
 
