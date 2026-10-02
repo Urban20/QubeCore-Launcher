@@ -1,6 +1,7 @@
 package archivos
 
 import (
+	"QbCore/configuracion"
 	"QbCore/consola"
 	"QbCore/utilidades"
 	"QbCore/versiones"
@@ -87,6 +88,7 @@ func Crear_comando(usuario, cp, java_Ram string, vj data.VersionJSON) []string {
 		"--userType", "legacy",
 		"--userProperties", "{}"}
 
+	jvm = append(jvm, configuracion.Config.Args_adicionales...)
 	jvm = append(jvm, optimizacion...)
 	jvm = append(jvm, juego...)
 

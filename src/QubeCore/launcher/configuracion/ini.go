@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"os"
 	"time"
@@ -40,6 +41,7 @@ func Crear_ini() Configuracion_ {
 	ini.AddSection(seccion_Java)
 	ini.Set(seccion_Java, opcion_ruta_java, ruta_java_ejecutable)
 	ini.Set(seccion_Java, opcion_ram_asignada, Arg_default)
+	ini.Set(seccion_Java, opcion_Args_adicionales, Args_ad_default)
 
 	// seccion concurrencia
 	ini.AddSection(seccion_concurrencia)
@@ -72,6 +74,9 @@ func leer_config() Configuracion_ {
 	// obtener java
 	ruta_Java, _ := cfg.Get(seccion_Java, opcion_ruta_java)
 	Ram, _ := cfg.Get(seccion_Java, opcion_ram_asignada)
+	args_str, _ := cfg.Get(seccion_Java, opcion_Args_adicionales)
+
+	args_adicionales := strings.Split(args_str, " ")
 
 	//obtener concurrencia
 	Hilos_str, _ := cfg.Get(seccion_concurrencia, opcion_concurrencia)
@@ -80,6 +85,7 @@ func leer_config() Configuracion_ {
 	conf.Usuario = Nick
 	conf.Ruta_Java = ruta_Java
 	conf.Ram = Ram
+	conf.Args_adicionales = args_adicionales
 
 	// seteo valores de la ruta del juego
 	ruta_juego, _ := cfg.Get(seccion_juego, opcion_ruta_juego)

@@ -32,6 +32,8 @@ var (
 	opcion_ram_asignada     = "Ram_asignada"
 	ruta_java_ejecutable, _ = exec.LookPath("java")
 	Arg_default             = "2G"
+	opcion_Args_adicionales = "Argumentos adicionales de jmv"
+	Args_ad_default         = ""
 
 	// descarga y concurrencia
 	seccion_concurrencia = "Concurrencia"
@@ -46,11 +48,12 @@ var (
 )
 
 type Configuracion_ struct { // los valores de la config
-	Usuario    string
-	Ruta_Java  string
-	Ram        string
-	Hilos      int
-	Ruta_juego string
+	Usuario          string
+	Ruta_Java        string
+	Ram              string
+	Hilos            int
+	Ruta_juego       string
+	Args_adicionales []string
 }
 
 func (conf Configuracion_) Mostrar_config() string {
