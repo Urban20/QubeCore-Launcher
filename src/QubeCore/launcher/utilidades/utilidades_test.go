@@ -2,6 +2,7 @@ package utilidades_test
 
 import (
 	"QbCore/utilidades"
+	"slices"
 	"strings"
 	"testing"
 )
@@ -142,6 +143,61 @@ func TestUsuario_valido(t *testing.T) {
 
 			if got != tt.want {
 				t.Errorf("Usuario_valido() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestString_vacio(t *testing.T) {
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		str  string
+		want bool
+	}{
+
+		{name: "basico", str: "", want: true},
+		{name: "espacio", str: "    ", want: true},
+		{name: "texto con espacio", str: "   test", want: false},
+		{name: "salto de linea", str: "  \n", want: true},
+		{name: "salto de linea con tab", str: "\t \n", want: true},
+		{name: "texto normal", str: "test", want: false},
+		{name: "retorno tab", str: "\t\r", want: true},
+		{name: "retorno tab con string", str: "\t\rtest", want: false},
+		{name: "doble salto de linea", str: "\n\n", want: true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := utilidades.String_vacio(tt.str)
+
+			if got != tt.want {
+				t.Errorf("String_vacio() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNormalizar_argumentos(t *testing.T) {
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		args string
+		want []string
+	}{
+
+		{name: "caso basico", args: "-arg1 -arg2 -arg3", want: []string{"-arg1", "-arg2", "-arg3"}},
+		{name: "vacio 1", args: "", want: []string{}},
+		{name: "vacio 2", args: " ", want: []string{}},
+		{name: "vacio 3", args: "\t", want: []string{}},
+		{name: "vacio 4", args: "  \n", want: []string{}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := utilidades.Normalizar_argumentos(tt.args)
+
+			if !slices.Equal(got, tt.want) {
+
+				t.Errorf("Normalizar_argumentos() = %v, want %v", got, tt.want)
 			}
 		})
 	}

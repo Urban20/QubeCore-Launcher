@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"path/filepath"
 	"strconv"
-	"strings"
 
 	"os"
 	"time"
@@ -76,7 +75,7 @@ func leer_config() Configuracion_ {
 	Ram, _ := cfg.Get(seccion_Java, opcion_ram_asignada)
 	args_str, _ := cfg.Get(seccion_Java, opcion_Args_adicionales)
 
-	args_adicionales := strings.Split(args_str, " ")
+	args_adicionales := utilidades.Normalizar_argumentos(args_str)
 
 	//obtener concurrencia
 	Hilos_str, _ := cfg.Get(seccion_concurrencia, opcion_concurrencia)

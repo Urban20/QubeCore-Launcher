@@ -107,3 +107,33 @@ func Usuario_valido(usuario string) bool {
 	return reg.Match([]byte(usuario))
 
 }
+
+func String_vacio(str string) bool {
+
+	for _, c := range str {
+
+		if !slices.Contains([]rune{' ', '\n', '\t', '\r'}, c) {
+
+			return false
+		}
+
+	}
+
+	return true
+
+}
+
+func Normalizar_argumentos(args string) []string {
+
+	var argumentos []string
+
+	if String_vacio(args) { // fuerza a devolver un slice vacio cuando el string es considerado vacio
+
+		return argumentos
+	}
+
+	argumentos = strings.Split(args, " ")
+
+	return argumentos
+
+}
