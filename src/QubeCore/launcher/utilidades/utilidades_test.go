@@ -186,6 +186,7 @@ func TestNormalizar_argumentos(t *testing.T) {
 	}{
 
 		{name: "caso basico", args: "-arg1 -arg2 -arg3", want: []string{"-arg1", "-arg2", "-arg3"}},
+		{name: "caso borde", args: " -arg1  -arg2 -arg3", want: []string{"-arg1", "-arg2", "-arg3"}},
 		{name: "vacio 1", args: "", want: []string{}},
 		{name: "vacio 2", args: " ", want: []string{}},
 		{name: "vacio 3", args: "\t", want: []string{}},
@@ -198,6 +199,28 @@ func TestNormalizar_argumentos(t *testing.T) {
 			if !slices.Equal(got, tt.want) {
 
 				t.Errorf("Normalizar_argumentos() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestQuitar_espacios(t *testing.T) {
+	tests := []struct {
+		name string // description of this test case
+		// Named input parameters for target function.
+		lista []string
+		want  []string
+	}{
+		{name: "caso basico", lista: []string{"", "\n", "  "}, want: []string{}},
+		{name: "caso basico 2", lista: []string{"", "\n", "  ", "test"}, want: []string{"test"}},
+		{name: "caso vacio", lista: []string{}, want: []string{}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := utilidades.Quitar_espacios(tt.lista)
+			// TODO: update the condition below to compare got with tt.want.
+			if !slices.Equal(got, tt.want) {
+				t.Errorf("Quitar_espacios() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -123,6 +123,23 @@ func String_vacio(str string) bool {
 
 }
 
+func Quitar_espacios(lista []string) []string {
+
+	var copia []string
+
+	for _, el := range lista {
+
+		if !String_vacio(el) {
+
+			copia = append(copia, el)
+		}
+
+	}
+
+	return copia
+
+}
+
 func Normalizar_argumentos(args string) []string {
 
 	var argumentos []string
@@ -134,6 +151,6 @@ func Normalizar_argumentos(args string) []string {
 
 	argumentos = strings.Split(args, " ")
 
-	return argumentos
+	return Quitar_espacios(argumentos)
 
 }
